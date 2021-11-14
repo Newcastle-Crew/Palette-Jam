@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
 public class PlayerControl : MonoBehaviour
 {
     public float instant_speed = 4.0f;
@@ -19,12 +20,13 @@ public class PlayerControl : MonoBehaviour
 
     public float jump_strength = 40f;
 
-    public bool on_ground;
+    public bool on_ground = false;
     public bool holding_jump = false;
 
     Vector2 ground_tilt = Vector2.up;
 
     Rigidbody2D rb2d;
+    Animator animator;
 
     ContactPoint2D[] contacts;
     List<Collider2D> scratch_results;
@@ -38,6 +40,7 @@ public class PlayerControl : MonoBehaviour
         scratch_contact_filter.layerMask = 1 << LayerMask.NameToLayer("Pushable");
         scratch_contact_filter.useLayerMask = true;
         rb2d = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         rb2d.gravityScale = normal_jump_gravity_scale;
     }
 
@@ -49,6 +52,7 @@ public class PlayerControl : MonoBehaviour
 
             on_ground = false;
             holding_jump = true;
+            animator.SetBool("jumping", true);
             rb2d.gravityScale = during_jump_gravity_scale;
             low_grav_jump_timer = max_big_jump_time;
         }
@@ -63,7 +67,7 @@ public class PlayerControl : MonoBehaviour
             var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
             var num_overlaps = Physics2D.OverlapCircle((Vector2)transform.position + local, .5f, scratch_contact_filter, scratch_results);
             for (int i = 0; i < num_overlaps; i++) {
-                var overlapping_rb2d = scratch_results[i].GetComponent<Rigidbody2D>();
+                var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
                 if (overlapping_rb2d != null) {
                     Debug.Log("Slashing!!");
                     overlapping_rb2d.AddForceAtPosition((right ? Vector2.right : Vector2.left) * scratch_force, (Vector2)transform.position + local, ForceMode2D.Impulse);
@@ -77,6 +81,7 @@ public class PlayerControl : MonoBehaviour
             low_grav_jump_timer -= Time.fixedDeltaTime;
             if (!Input.GetButton("Jump") || rb2d.velocity.y < 0f || low_grav_jump_timer < 0f) {
                 holding_jump = false;
+                animator.SetBool("jumping", false);
                 rb2d.gravityScale = normal_jump_gravity_scale;
             }
         }
@@ -97,7 +102,11 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
+        var old_on_ground = on_ground;
         on_ground = best_angle_diff > 0.8f;
+        if (old_on_ground != on_ground) {
+            animator.SetBool("on_ground", on_ground);
+        }
         ground_tilt = best;
 
         if (on_ground) {
@@ -106,10 +115,16 @@ public class PlayerControl : MonoBehaviour
 
         var horizontal = Input.GetAxisRaw("Horizontal");
         
-        if (horizontal < 0f) {
-            right = false;
-        } else if (horizontal > 0f) {
-            right = true;
+        if (on_ground) {
+            // @Performance: We could only update this if you pressed the axis recently.
+            animator.SetBool("running", Mathf.Abs(horizontal) > 0.1f);
+            if (horizontal < 0f) {
+                right = false;
+                transform.localScale = new Vector3(-1f, 1f, 1f);
+            } else if (horizontal > 0f) {
+                right = true;
+                transform.localScale = new Vector3(1f, 1f, 1f);
+            }
         }
 
         rb2d.velocity = new Vector2(rb2d.velocity.x + (horizontal * (on_ground ? speed : air_speed)) * Time.fixedDeltaTime * Time.fixedDeltaTime,  rb2d.velocity.y);
