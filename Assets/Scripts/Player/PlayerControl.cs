@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -10,6 +11,10 @@ public class PlayerControl : MonoBehaviour
     public float normal_jump_gravity_scale = 1.6f;
     public float during_jump_gravity_scale = 0.6f;
     public float max_big_jump_time = 0.4f; 
+    public float scratch_force = 2.0f;
+    public bool right = true;
+    public Transform scratch_pos;
+
     float low_grav_jump_timer = 0f;
 
     public float jump_strength = 40f;
@@ -22,10 +27,16 @@ public class PlayerControl : MonoBehaviour
     Rigidbody2D rb2d;
 
     ContactPoint2D[] contacts;
+    List<Collider2D> scratch_results;
+    ContactFilter2D scratch_contact_filter;
 
     void Start()
     {
         contacts = new ContactPoint2D[4];
+        scratch_results = new List<Collider2D>();
+        scratch_contact_filter = new ContactFilter2D();
+        scratch_contact_filter.layerMask = 1 << LayerMask.NameToLayer("Pushable");
+        scratch_contact_filter.useLayerMask = true;
         rb2d = GetComponent<Rigidbody2D>();
         rb2d.gravityScale = normal_jump_gravity_scale;
     }
@@ -40,6 +51,24 @@ public class PlayerControl : MonoBehaviour
             holding_jump = true;
             rb2d.gravityScale = during_jump_gravity_scale;
             low_grav_jump_timer = max_big_jump_time;
+        }
+
+        // "Slash"
+        if (Input.GetButtonDown("Action")) {
+            Vector2 maybe_flip_horizontal(Vector2 input, bool flip) {
+                return new Vector2(flip ? -input.x : input.x, input.y);
+            }
+
+            // Find a slashable object
+            var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
+            var num_overlaps = Physics2D.OverlapCircle((Vector2)transform.position + local, .5f, scratch_contact_filter, scratch_results);
+            for (int i = 0; i < num_overlaps; i++) {
+                var overlapping_rb2d = scratch_results[i].GetComponent<Rigidbody2D>();
+                if (overlapping_rb2d != null) {
+                    Debug.Log("Slashing!!");
+                    overlapping_rb2d.AddForceAtPosition((right ? Vector2.right : Vector2.left) * scratch_force, (Vector2)transform.position + local, ForceMode2D.Impulse);
+                }
+            }
         }
     }
 
@@ -76,6 +105,13 @@ public class PlayerControl : MonoBehaviour
         }
 
         var horizontal = Input.GetAxisRaw("Horizontal");
+        
+        if (horizontal < 0f) {
+            right = false;
+        } else if (horizontal > 0f) {
+            right = true;
+        }
+
         rb2d.velocity = new Vector2(rb2d.velocity.x + (horizontal * (on_ground ? speed : air_speed)) * Time.fixedDeltaTime * Time.fixedDeltaTime,  rb2d.velocity.y);
     }
 }
