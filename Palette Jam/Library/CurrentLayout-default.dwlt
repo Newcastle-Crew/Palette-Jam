@@ -21,7 +21,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: Project
   m_RootView: {fileID: 2}
-  m_MinSize: {x: 875, y: 542}
+  m_MinSize: {x: 875, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
   m_Maximized: 1
 --- !u!114 &2
@@ -46,7 +46,7 @@ MonoBehaviour:
     y: 0
     width: 1920
     height: 997
-  m_MinSize: {x: 875, y: 542}
+  m_MinSize: {x: 875, y: 521}
   m_MaxSize: {x: 10000, y: 10000}
   m_UseTopView: 1
   m_TopViewHeight: 30
@@ -116,10 +116,10 @@ MonoBehaviour:
     y: 30
     width: 1920
     height: 947
-  m_MinSize: {x: 679, y: 492}
-  m_MaxSize: {x: 14002, y: 14042}
+  m_MinSize: {x: 679, y: 471}
+  m_MaxSize: {x: 14001, y: 14021}
   vertical: 0
-  controlID: 32652
+  controlID: 4069
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -141,10 +141,10 @@ MonoBehaviour:
     y: 0
     width: 1483
     height: 947
-  m_MinSize: {x: 403, y: 492}
-  m_MaxSize: {x: 10001, y: 14042}
+  m_MinSize: {x: 403, y: 471}
+  m_MaxSize: {x: 10000, y: 14021}
   vertical: 1
-  controlID: 32725
+  controlID: 4074
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 32726
+  controlID: 4075
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -395,7 +395,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 8a72ffff7a73ffffbc7effff0687ffffb297ffffbca0ffff9ea2ffff46a3ffffe0b0ffff16b1ffff26b2ffff2ab2ffffd6c8ffff0ec9ffff22caffff26caffff5adcffff8adcffff1ae0ffff44e0ffff12e1ffff1ce2ffff9ce9ffff18ecffff9eecffffceecffffb8f4ffffe8f4ffff1cf5ffff64f5ffff9af5ffffdaf5ffff54f6ffffa4f6ffffdaf6ffff0af7ffff8cf7ffffccf7ffff78f8ffffaaf8ffffe2f8ffff54fbffffb4550000205600004a580000106700003c6d0000466d00007e7c0000788000007c80000084800000
+      m_ExpandedIDs: e2e6ffff54fbffff0c5200001652000038520000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -455,9 +455,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 989.63715, y: 518.97614, z: -27.150928}
+    m_Target: {x: 402.007, y: 247.74156, z: -90.16395}
     speed: 2
-    m_Value: {x: 989.63715, y: 518.97614, z: -27.150928}
+    m_Value: {x: 402.007, y: 247.74156, z: -90.16395}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -508,9 +508,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 762.0671
+    m_Target: 238.72894
     speed: 2
-    m_Value: 762.0671
+    m_Value: 238.72894
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -573,13 +573,13 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scenes
+    - Assets/Scripts/MainMenu
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 85
   m_LastFolders:
-  - Assets/Scenes
+  - Assets/Scripts/MainMenu
   m_LastFoldersGridSize: 85
   m_LastProjectPath: F:\My Creations\GameJams\PALETTE JAM 2021\Palette-Jam\Palette
     Jam
@@ -587,9 +587,9 @@ MonoBehaviour:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3e520000
-    m_LastClickedID: 21054
-    m_ExpandedIDs: 000000003252000000ca9a3b
+    m_SelectedIDs: 52540000
+    m_LastClickedID: 21586
+    m_ExpandedIDs: 00000000c8520000d452000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -617,7 +617,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000003252000000ca9a3b
+    m_ExpandedIDs: 00000000c852000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -730,7 +730,7 @@ MonoBehaviour:
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
   m_LastInspectedObjectInstanceID: -1
-  m_LastVerticalScrollValue: 278
+  m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
   m_LockTracker:
