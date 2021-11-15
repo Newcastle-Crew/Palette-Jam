@@ -11,8 +11,11 @@ public class PlayerControl : MonoBehaviour
     public float ground_friction = 0.4f;
     public float normal_jump_gravity_scale = 1.6f;
     public float during_jump_gravity_scale = 0.6f;
-    public float max_big_jump_time = 0.4f; 
-    public float scratch_force = 2.0f;
+    public float max_big_jump_time = 0.4f;
+
+    public float weak_scratch_force = 0.5f;
+    public bool scratching = false;
+
     public bool right = true;
     public Transform scratch_pos;
 
@@ -63,6 +66,8 @@ public class PlayerControl : MonoBehaviour
                 return new Vector2(flip ? -input.x : input.x, input.y);
             }
 
+            animator.SetTrigger("weak_slash");
+
             // Find a slashable object
             var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
             var num_overlaps = Physics2D.OverlapCircle((Vector2)transform.position + local, .5f, scratch_contact_filter, scratch_results);
@@ -70,7 +75,11 @@ public class PlayerControl : MonoBehaviour
                 var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
                 if (overlapping_rb2d != null) {
                     Debug.Log("Slashing!!");
-                    overlapping_rb2d.AddForceAtPosition((right ? Vector2.right : Vector2.left) * scratch_force, (Vector2)transform.position + local, ForceMode2D.Impulse);
+                    overlapping_rb2d.AddForceAtPosition(
+                        (right ? Vector2.right : Vector2.left) * weak_scratch_force,
+                        (Vector2)transform.position + local,
+                        ForceMode2D.Impulse
+                    );
                 }
             }
         }
@@ -114,8 +123,9 @@ public class PlayerControl : MonoBehaviour
         }
 
         var horizontal = Input.GetAxisRaw("Horizontal");
-        
-        if (on_ground) {
+
+        var ground_controls = on_ground;
+        if (ground_controls) {
             // @Performance: We could only update this if you pressed the axis recently.
             animator.SetBool("running", Mathf.Abs(horizontal) > 0.1f);
             if (horizontal < 0f) {
@@ -127,6 +137,6 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        rb2d.velocity = new Vector2(rb2d.velocity.x + (horizontal * (on_ground ? speed : air_speed)) * Time.fixedDeltaTime * Time.fixedDeltaTime,  rb2d.velocity.y);
+        rb2d.velocity = new Vector2(rb2d.velocity.x + (horizontal * (ground_controls ? speed : air_speed)) * Time.fixedDeltaTime * Time.fixedDeltaTime,  rb2d.velocity.y);
     }
 }
