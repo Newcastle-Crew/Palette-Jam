@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class PlayerControl : MonoBehaviour
 {
+    public static PlayerControl Instance = null;
+
     public float instant_speed = 4.0f;
     public float speed = 1.0f;
     public float air_speed = 0.02f;
@@ -35,7 +37,7 @@ public class PlayerControl : MonoBehaviour
     List<Collider2D> scratch_results;
     ContactFilter2D scratch_contact_filter;
 
-    void Start()
+    void Awake()
     {
         contacts = new ContactPoint2D[4];
         scratch_results = new List<Collider2D>();
@@ -45,6 +47,7 @@ public class PlayerControl : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rb2d.gravityScale = normal_jump_gravity_scale;
+        Instance = this;
     }
 
     void Update() {
