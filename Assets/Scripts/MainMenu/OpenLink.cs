@@ -10,6 +10,9 @@ public class OpenLink : MonoBehaviour
     public void OpenGameplayMusicCredit()
     { Application.OpenURL("https://youtu.be/3l7tuhHdke4"); }
 
+    public void OpenMainMenuCredit()
+    { Application.OpenURL("https://youtu.be/pXdrz1pB35Q");  }
+
     public void WestyCredit()
     { Application.OpenURL("https://westydesign.itch.io/"); }
 
