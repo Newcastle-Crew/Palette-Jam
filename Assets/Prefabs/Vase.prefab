@@ -137,8 +137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33daaa90df4734947832105458cd5013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1
+  health: 10
   fragmentPrefab: {fileID: 8382533931481676928, guid: d7a57f1886ff1214987e127ad2b4acee, type: 3}
+  score: 10
 --- !u!114 &1643324544010999329
 MonoBehaviour:
   m_ObjectHideFlags: 0

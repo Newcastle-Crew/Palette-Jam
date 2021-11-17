@@ -799,14 +799,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: health
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: static_defense
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 5104776524890881705, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
       propertyPath: m_Name
       value: Vase (4)
@@ -1062,14 +1054,6 @@ PrefabInstance:
     - target: {fileID: 5104776524890881701, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: health
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: static_defense
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5104776524890881705, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
       propertyPath: m_Name
@@ -1755,7 +1739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b02bf07ae12b724eb94fcc9cb8eb168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  travel_speed: 3
+  travel_speed: 15
 --- !u!1 &1904564039
 GameObject:
   m_ObjectHideFlags: 0
@@ -1901,14 +1885,6 @@ PrefabInstance:
     - target: {fileID: 5104776524890881701, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: health
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104776524890881703, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
-      propertyPath: static_defense
-      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5104776524890881705, guid: 9a70233741aff5d4eac7899df5ad310c, type: 3}
       propertyPath: m_Name

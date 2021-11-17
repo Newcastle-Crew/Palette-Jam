@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -6,7 +7,9 @@ public class Breakable : MonoBehaviour
 {
     public float health = 1f;
     public GameObject fragmentPrefab = null; 
-    public int score = 1;
+    public int score = 5;
+
+    public int combo_counter = -1;
 
     public void Damage(float damage) {
         var old_health = health;
@@ -24,7 +27,7 @@ public class Breakable : MonoBehaviour
     }
 
     public void BreakApart() {
-        Score.AddScore((Vector2)transform.position, score);
+        Score.AddScore((Vector2)transform.position, score + combo_counter);
 
         var sprite = GetComponent<SpriteRenderer>().sprite;
         var width = sprite.rect.width / sprite.pixelsPerUnit;
