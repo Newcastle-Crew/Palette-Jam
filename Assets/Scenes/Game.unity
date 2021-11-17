@@ -445,6 +445,7 @@ GameObject:
   - component: {fileID: 253572020}
   - component: {fileID: 253572022}
   - component: {fileID: 253572021}
+  - component: {fileID: 253572023}
   m_Layer: 5
   m_Name: ScoreUI
   m_TagString: Untagged
@@ -504,7 +505,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 100
+  m_Text: '0
+
+'
 --- !u!222 &253572022
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -513,6 +516,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 253572019}
   m_CullTransparentMesh: 1
+--- !u!114 &253572023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253572019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 378cc2c8a8f4a904095039e3e3912791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score_animation_prefab: {fileID: 8501373307137575259, guid: cfa904d3669cb3c4ca466fcdfad955b7, type: 3}
+  score_animation_time: 1.05
 --- !u!1 &300253173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1738,6 +1755,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b02bf07ae12b724eb94fcc9cb8eb168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  travel_speed: 3
 --- !u!1 &1904564039
 GameObject:
   m_ObjectHideFlags: 0

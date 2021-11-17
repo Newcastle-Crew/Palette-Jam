@@ -6,6 +6,7 @@ public class Breakable : MonoBehaviour
 {
     public float health = 1f;
     public GameObject fragmentPrefab = null; 
+    public int score = 1;
 
     public void Damage(float damage) {
         var old_health = health;
@@ -23,6 +24,8 @@ public class Breakable : MonoBehaviour
     }
 
     public void BreakApart() {
+        Score.AddScore((Vector2)transform.position, score);
+
         var sprite = GetComponent<SpriteRenderer>().sprite;
         var width = sprite.rect.width / sprite.pixelsPerUnit;
         var height = sprite.rect.height / sprite.pixelsPerUnit;
