@@ -11,6 +11,10 @@ public class Room : MonoBehaviour
         box = GetComponent<BoxCollider2D>();
     }
 
+    void OnDestroy() {
+        CameraControl.RemoveRoomBound(this);
+    }
+
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer != LayerMask.NameToLayer("Player")) return;
 

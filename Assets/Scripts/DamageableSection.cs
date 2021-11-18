@@ -40,8 +40,6 @@ public class DamageableSection : MonoBehaviour
         float damage = impulse_force * other_hardness.hardness;
         if (damage < static_defense) return;
 
-        Debug.Log(collision.collider.gameObject.name);
-
         breakable.Damage(damage);
     }
 }
