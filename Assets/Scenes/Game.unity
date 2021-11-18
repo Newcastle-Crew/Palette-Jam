@@ -998,6 +998,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8118553472679089725, guid: 4728a161ecbf84f479740ea549c38e7d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8118553472679089725, guid: 4728a161ecbf84f479740ea549c38e7d, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8118553472679089727, guid: 4728a161ecbf84f479740ea549c38e7d, type: 3}
       propertyPath: m_Name
       value: Ground (5)
