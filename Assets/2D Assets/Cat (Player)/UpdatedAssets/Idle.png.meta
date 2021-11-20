@@ -1,19 +1,16 @@
 fileFormatVersion: 2
-guid: 013eae9982a0e614e8a4fa849fe9a338
+guid: 6cae5822cef18934e9e68430b9b2a5ca
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5390058758022448350
-    second: Bark_0
+      213: 4723107735738678597
+    second: Idle_0
   - first:
-      213: 8135402142719365447
-    second: Bark_1
+      213: -7385789195546760866
+    second: Idle_1
   - first:
-      213: -8390556101911549613
-    second: Bark_2
-  - first:
-      213: -2816483088515319758
-    second: Bark_3
+      213: 3234629978573100161
+    second: Idle_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -58,7 +55,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -115,12 +112,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bark_0
+      name: Idle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -129,19 +126,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22bb6990e1aa235b0800000000000000
-      internalID: -5390058758022448350
+      spriteID: 54d7a982679db8140800000000000000
+      internalID: 4723107735738678597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bark_1
+      name: Idle_1
       rect:
         serializedVersion: 2
-        x: 24
+        x: 20
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,19 +147,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7415db54521c6e070800000000000000
-      internalID: 8135402142719365447
+      spriteID: e596485bbd7608990800000000000000
+      internalID: -7385789195546760866
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bark_2
+      name: Idle_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 40
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -171,29 +168,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 359639d2ea1ce8b80800000000000000
-      internalID: -8390556101911549613
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bark_3
-      rect:
-        serializedVersion: 2
-        x: 72
-        y: 0
-        width: 24
-        height: 20
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2383629ad87d9e8d0800000000000000
-      internalID: -2816483088515319758
+      spriteID: 184dda4e3d6b3ec20800000000000000
+      internalID: 3234629978573100161
       vertices: []
       indices: 
       edges: []
