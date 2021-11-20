@@ -85,6 +85,7 @@ public class PlayerControl : MonoBehaviour
 
         on_ground = false;
         holding_jump = true;
+        animator.SetBool("on_ground", false);
         animator.SetBool("jumping", true);
         rb2d.gravityScale = during_jump_gravity_scale;
         low_grav_jump_timer = max_big_jump_time;
@@ -169,40 +170,40 @@ public class PlayerControl : MonoBehaviour
         }
 
         var old_on_ground = on_ground;
+
         on_ground = best_angle_diff > 0.8f;
+        if ((Time.time - last_jump_t) < 0.1f) {
+            on_ground = false;
+        }
+
         ground_tilt = best;
         if (old_on_ground != on_ground) {
             if (on_ground) {
                 if (bouncy) {
-                    if ((Time.time - last_jump_t) > 0.1f) {
-                        // Super jump
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                        if (Input.GetButton("Jump")) {
-                            bounces += 1;
-                            bounces = Mathf.Min(bounces, max_bounces);
-                        } else {
-                            bounces -= 1;
-                            bounces = Mathf.Max(bounces, 0);
-                        }
-
-                        Jump(bounces * bounce_strength + bounce_jump_percent);
-                        failed_jump_t = -100f;
+                    // Super jump
+                    rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                    if (Input.GetButton("Jump")) {
+                        bounces += 1;
+                        bounces = Mathf.Min(bounces, max_bounces);
+                    } else {
+                        bounces -= 1;
+                        bounces = Mathf.Max(bounces, 0);
                     }
+
+                    Jump(bounces * bounce_strength + bounce_jump_percent);
+                    failed_jump_t = -100f;
                 } else {
-                    Debug.Log("Jump reset to zero");
                     bounces = 0;
 
                     if (Input.GetButton("Jump") && (Time.time - failed_jump_t) <= jump_grace_period) {
                         rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
                         Jump();
                         failed_jump_t = -100f;
-                    } else {
-                        animator.SetBool("on_ground", on_ground);
                     }
                 }
-            } else {
-                animator.SetBool("on_ground", on_ground);
             }
+
+            animator.SetBool("on_ground", on_ground);
         }
 
         if (on_ground) {
