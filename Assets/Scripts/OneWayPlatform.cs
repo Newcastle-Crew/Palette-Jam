@@ -7,6 +7,7 @@ public class OneWayPlatform : MonoBehaviour
     int player_layer;
 
     int players_inside = 0;
+    bool ignoring = false;
 
     void Awake() {
         player_layer = LayerMask.NameToLayer("Player");
@@ -15,7 +16,13 @@ public class OneWayPlatform : MonoBehaviour
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer != player_layer)  return;
 
-        Physics2D.IgnoreCollision(collider_a, other, true);
+        // If they are already touching, e.g. the collider and the trigger got activated at the same time,
+        // we don't disable it.
+        if (!collider_a.bounds.Intersects(other.bounds)) {
+            Physics2D.IgnoreCollision(collider_a, other, true);
+            ignoring = true;
+        }
+
         players_inside += 1;
     }
 
@@ -23,7 +30,9 @@ public class OneWayPlatform : MonoBehaviour
         if (other.gameObject.layer != player_layer)  return;
         players_inside -= 1;
 
-        StartCoroutine("Ignore", other);
+        if (ignoring) {
+            StartCoroutine("Ignore", other);
+        }
     }
 
     IEnumerator Ignore(Collider2D other) {
@@ -33,6 +42,7 @@ public class OneWayPlatform : MonoBehaviour
         // of exiting, which would cause the IgnoreCollision to be reset while they're still inside.
         if (players_inside == 0) {
             Physics2D.IgnoreCollision(collider_a, other, false);
+            ignoring = false;
         }
     }
 }

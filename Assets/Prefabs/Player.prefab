@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5925326129474684097}
   - component: {fileID: 5925326129474684100}
   - component: {fileID: 5925326129474684096}
+  - component: {fileID: 31445298}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -123,14 +124,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2600
   catnip_speed: 7500
-  air_speed: 200
-  catnip_air_speed: 500
+  air_speed: 400
+  catnip_air_speed: 600
+  air_speed_ineffectiveness_factor: 0.4
   ground_friction: 23
   normal_jump_gravity_scale: 2.4
   during_jump_gravity_scale: 1.2
   max_big_jump_time: 0.4
   weak_scratch_force: 7
   catnip_scratch_force: 13
+  bounce_jump_percent: 0.7
+  bounce_strength: 0.4
+  max_bounces: 3
+  bounces: 0
+  jump_grace_period: 0.2
   scratch_pos: {fileID: 5925326130821677759}
   jump_strength: 7
   catnip_jump_strength: 10
@@ -179,6 +186,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &31445298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5925326129474684102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc4fc7580353b3046ae09a852fcdd7d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 0
 --- !u!1 &5925326130821677744
 GameObject:
   m_ObjectHideFlags: 0
