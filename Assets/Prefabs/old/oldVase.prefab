@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5104776524890881703}
   - component: {fileID: 1643324544010999329}
   m_Layer: 7
-  m_Name: Vase
+  m_Name: oldVase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
