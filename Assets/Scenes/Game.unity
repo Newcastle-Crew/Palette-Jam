@@ -440,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.79
+      value: -2.75
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1458,7 +1458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.81
+      value: -2.9
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3810,7 +3810,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.84
+      value: -2.69
       objectReference: {fileID: 0}
     - target: {fileID: 8191684366055593428, guid: 6894db8d7165c5a40a0e3b8bb50aa2b9, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3976,8 +3976,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 5925326129474684097, guid: fec4626fa4557be498ab619191461330, type: 3}
+      propertyPath: bounce_strength
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925326129474684097, guid: fec4626fa4557be498ab619191461330, type: 3}
       propertyPath: jump_grace_period
       value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5925326129474684097, guid: fec4626fa4557be498ab619191461330, type: 3}
+      propertyPath: bounce_jump_percent
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 5925326129474684097, guid: fec4626fa4557be498ab619191461330, type: 3}
       propertyPath: full_bounce_jump_percent

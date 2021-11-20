@@ -20,7 +20,9 @@ public class PlayerControl : MonoBehaviour
     public float catnip_scratch_force = 1.5f;
 
     public float bounce_jump_percent = 0.5f;
-    public float full_bounce_jump_percent = 2.0f;
+    public float bounce_strength = 0.5f;
+    public int max_bounces = 3;
+    public int bounces = 0;
 
     // The point in time where a failed jump happened because you weren't on the ground.
     // Used so that if you land just a fraction of a second after you failed a jump, it just jumps anyway.
@@ -31,6 +33,7 @@ public class PlayerControl : MonoBehaviour
     public Transform scratch_pos;
 
     float low_grav_jump_timer = 0f;
+    float last_jump_t = -100f;
 
     public float jump_strength = 40f;
     public float catnip_jump_strength = 50f;
@@ -76,6 +79,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     void Jump(float percent = 1f) {
+        last_jump_t = Time.time;
         // NOTE: Tilted jumps right now have less strength, this may be confusing if we don't have a graphic for it.
         rb2d.AddForce(Vector2.up * Vector2.Dot(ground_tilt, Vector2.up) * (catnip_time > 0f ? catnip_jump_strength : jump_strength) * percent, ForceMode2D.Impulse);
 
@@ -111,6 +115,11 @@ public class PlayerControl : MonoBehaviour
                 var painting_fall = scratch_results[i].GetComponentInParent<PaintingFall>();
                 if (painting_fall != null) {
                     painting_fall.Fall();
+                }
+
+                var breakable = scratch_results[i].GetComponentInParent<Breakable>();
+                if (breakable != null) {
+                    breakable.combo_counter = 0;
                 }
 
                 var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
@@ -163,19 +172,36 @@ public class PlayerControl : MonoBehaviour
         on_ground = best_angle_diff > 0.8f;
         ground_tilt = best;
         if (old_on_ground != on_ground) {
-            if (bouncy) {
-                // Super jump
-                rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                Jump(Input.GetButton("Jump") ? full_bounce_jump_percent : bounce_jump_percent);
-                failed_jump_t = -100f;
-            } else {
-                if (Input.GetButton("Jump") && (Time.time - failed_jump_t) <= jump_grace_period) {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
-                    Jump();
-                    failed_jump_t = -100f;
+            if (on_ground) {
+                if (bouncy) {
+                    if ((Time.time - last_jump_t) > 0.1f) {
+                        // Super jump
+                        rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                        if (Input.GetButton("Jump")) {
+                            bounces += 1;
+                            bounces = Mathf.Min(bounces, max_bounces);
+                        } else {
+                            bounces -= 1;
+                            bounces = Mathf.Max(bounces, 0);
+                        }
+
+                        Jump(bounces * bounce_strength + bounce_jump_percent);
+                        failed_jump_t = -100f;
+                    }
                 } else {
-                    animator.SetBool("on_ground", on_ground);
+                    Debug.Log("Jump reset to zero");
+                    bounces = 0;
+
+                    if (Input.GetButton("Jump") && (Time.time - failed_jump_t) <= jump_grace_period) {
+                        rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                        Jump();
+                        failed_jump_t = -100f;
+                    } else {
+                        animator.SetBool("on_ground", on_ground);
+                    }
                 }
+            } else {
+                animator.SetBool("on_ground", on_ground);
             }
         }
 
