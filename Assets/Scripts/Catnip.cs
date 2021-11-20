@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Catnip : MonoBehaviour
 {
-    public float SpeedUpgrade = 2f;
-    public float JumpUpgrade = 1.5f;
+    public float time = 30f;
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+        var player_control = other.gameObject.GetComponent<PlayerControl>();
+
+        if (player_control != null) {
+            player_control.ActivateCatnip(time);
+
             var animator = GetComponent<Animator>();
             if (animator != null) {
                 animator.SetTrigger("collected");

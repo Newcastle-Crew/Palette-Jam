@@ -7,26 +7,30 @@ public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl Instance = null;
 
-    public float instant_speed = 4.0f;
     public float speed = 1.0f;
+    public float catnip_speed = 1.5f;
     public float air_speed = 0.02f;
+    public float catnip_air_speed = 10f;
     public float ground_friction = 0.4f;
     public float normal_jump_gravity_scale = 1.6f;
     public float during_jump_gravity_scale = 0.6f;
     public float max_big_jump_time = 0.4f;
 
     public float weak_scratch_force = 0.5f;
-    public bool scratching = false;
+    public float catnip_scratch_force = 1.5f;
 
-    public bool right = true;
+    bool right = true;
     public Transform scratch_pos;
 
     float low_grav_jump_timer = 0f;
 
     public float jump_strength = 40f;
+    public float catnip_jump_strength = 50f;
 
-    public bool on_ground = false;
-    public bool holding_jump = false;
+    bool on_ground = false;
+    bool holding_jump = false;
+
+    float catnip_time = -1f;
 
     Vector2 ground_tilt = Vector2.up;
 
@@ -50,11 +54,21 @@ public class PlayerControl : MonoBehaviour
         Instance = this;
     }
 
+    public void ActivateCatnip(float time) {
+        // TODO: Speed up music as well.
+
+        if (this.catnip_time < 0f) {
+            this.catnip_time = time;
+        } else {
+            this.catnip_time += time;
+        }
+    }
+
     void Update() {
         // We're on somewhat stable/straight ground, therefore we can jump!
         if (on_ground && Input.GetButtonDown("Jump")) {
             // NOTE: Tilted jumps right now have less strength, this may be confusing if we don't have a graphic for it.
-            rb2d.AddForce(Vector2.up * Vector2.Dot(ground_tilt, Vector2.up) * jump_strength, ForceMode2D.Impulse);
+            rb2d.AddForce(Vector2.up * Vector2.Dot(ground_tilt, Vector2.up) * (catnip_time > 0f ? catnip_jump_strength : jump_strength), ForceMode2D.Impulse);
 
             on_ground = false;
             holding_jump = true;
@@ -79,7 +93,7 @@ public class PlayerControl : MonoBehaviour
                 if (overlapping_rb2d != null) {
                     Debug.Log("Slashing!!");
                     overlapping_rb2d.AddForceAtPosition(
-                        (right ? Vector2.right : Vector2.left) * weak_scratch_force,
+                        (right ? Vector2.right : Vector2.left) * (catnip_time > 0f ? catnip_scratch_force : weak_scratch_force),
                         (Vector2)transform.position + local,
                         ForceMode2D.Impulse
                     );
@@ -89,6 +103,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     void FixedUpdate() {
+        this.catnip_time -= Time.fixedDeltaTime;
+
         if (holding_jump) {
             low_grav_jump_timer -= Time.fixedDeltaTime;
             if (!Input.GetButton("Jump") || rb2d.velocity.y < 0f || low_grav_jump_timer < 0f) {
@@ -140,6 +156,13 @@ public class PlayerControl : MonoBehaviour
             }
         }
 
-        rb2d.velocity = new Vector2(rb2d.velocity.x + (horizontal * (ground_controls ? speed : air_speed)) * Time.fixedDeltaTime * Time.fixedDeltaTime,  rb2d.velocity.y);
+        rb2d.velocity = new Vector2(
+            rb2d.velocity.x + (horizontal * (
+                ground_controls ?
+                    (catnip_time > 0f ? catnip_speed : speed) :
+                    (catnip_time > 0f ? catnip_air_speed : air_speed))
+            ) * Time.fixedDeltaTime * Time.fixedDeltaTime,
+            rb2d.velocity.y
+        );
     }
 }
