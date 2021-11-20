@@ -15,10 +15,6 @@ public class DamageableSection : MonoBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Player")) {
-            this.breakable.combo_counter = 0;
-        }
-
         var other_breakable = collision.collider.GetComponentInParent<Breakable>();
         if (other_breakable != null && other_breakable.combo_counter != -1) {
             if (breakable.combo_counter == -1) {

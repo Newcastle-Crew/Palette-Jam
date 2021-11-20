@@ -57,7 +57,7 @@ public class Breakable : MonoBehaviour
             new Vector2(uv_x, uv_y + uv_height),
         };
 
-        Split(vertices, uv, pieces);
+        Split(vertices, uv, 0);
     }
 
     public void Split(Vector3[] vertices, Vector2[] uvs, int recursion) {
@@ -69,7 +69,7 @@ public class Breakable : MonoBehaviour
             total_length += (vertices[(i + 1) % vertices.Length] - vertices[i]).magnitude;
         }
 
-        float point_a = Random.Range(total_length * 0.15f, total_length * 0.35f);
+        float point_a = recursion == 0 ? Random.Range(0f, total_length * 0.499f) : Random.Range(total_length * 0.15f, total_length * 0.35f);
         float point_b = point_a + total_length * 0.5f;
 
         var point_a_i = -1;
@@ -119,10 +119,10 @@ public class Breakable : MonoBehaviour
             polygon_a_uvs[i + point_a_i + 3] = uvs[i + point_b_i + 1];
         }
 
-        if (recursion == 0) {
+        if (recursion == pieces) {
             InstantiatePolygon(polygon_a_vertices, polygon_a_uvs);
         } else {
-            Split(polygon_a_vertices, polygon_a_uvs, recursion - 1);
+            Split(polygon_a_vertices, polygon_a_uvs, recursion + 1);
         }
 
         var polygon_b_vertices = new Vector3[polygon_b_length];
@@ -137,10 +137,10 @@ public class Breakable : MonoBehaviour
         polygon_b_vertices[(point_b_i - point_a_i) + 1] = point_b_pos;
         polygon_b_uvs[(point_b_i - point_a_i) + 1] = point_b_uv;
 
-        if (recursion == 0) {
+        if (recursion == pieces) {
             InstantiatePolygon(polygon_b_vertices, polygon_b_uvs);
         } else {
-            Split(polygon_b_vertices, polygon_b_uvs, recursion - 1);
+            Split(polygon_b_vertices, polygon_b_uvs, recursion + 1);
         }
     }
 
