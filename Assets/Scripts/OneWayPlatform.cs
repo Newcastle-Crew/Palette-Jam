@@ -1,17 +1,12 @@
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class OneWayPlatform : MonoBehaviour
 {
     Collider2D blocking_collider = null;
     Collider2D trigger_collider = null;
-    int player_layer;
-
-    bool ignoring = false;
 
     void Awake() {
-        player_layer = LayerMask.NameToLayer("Player");
-
         foreach(var v in GetComponents<Collider2D>()) {
             if (v.isTrigger) {
                 trigger_collider = v;
@@ -26,30 +21,19 @@ public class OneWayPlatform : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision) {
         if (Physics2D.IsTouching(collision.collider, trigger_collider)) {
-            if (!ignoring) {
-                Physics2D.IgnoreCollision(blocking_collider, collision.collider, true);
-                ignoring = true;
-            }
+            Physics2D.IgnoreCollision(blocking_collider, collision.collider, true);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other) {
-        if (other.gameObject.layer != player_layer)  return;
-
         // If they are already touching, e.g. the collider and the trigger got activated at the same time,
         // we don't disable it.
         if (!blocking_collider.bounds.Intersects(other.bounds)) {
             Physics2D.IgnoreCollision(blocking_collider, other, true);
-            ignoring = true;
         }
     }
 
     void OnTriggerExit2D(Collider2D other) {
-        if (other.gameObject.layer != player_layer)  return;
-
-        if (ignoring) {
-            Physics2D.IgnoreCollision(blocking_collider, other, false);
-            ignoring = false;
-        }
+        Physics2D.IgnoreCollision(blocking_collider, other, false);
     }
 }
