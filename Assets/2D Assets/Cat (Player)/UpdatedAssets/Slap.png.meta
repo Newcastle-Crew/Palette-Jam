@@ -1,19 +1,34 @@
 fileFormatVersion: 2
-guid: 013eae9982a0e614e8a4fa849fe9a338
+guid: c472bfcb582967e47b4c93411fed4772
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5390058758022448350
-    second: Bark_0
+      213: 3962135299906821353
+    second: Slap_0
   - first:
-      213: 8135402142719365447
-    second: Bark_1
+      213: 1730731976012922385
+    second: Slap_1
   - first:
-      213: -8390556101911549613
-    second: Bark_2
+      213: 2147920089116799096
+    second: Slap_2
   - first:
-      213: -2816483088515319758
-    second: Bark_3
+      213: -6894216653947103410
+    second: Slap_3
+  - first:
+      213: 2526942168787642463
+    second: Slap_4
+  - first:
+      213: 441917748503725501
+    second: Slap_5
+  - first:
+      213: -4115468362818992575
+    second: Slap_6
+  - first:
+      213: -5070175758256061706
+    second: Slap_7
+  - first:
+      213: 418791618244017471
+    second: Slap_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -58,7 +73,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -115,12 +130,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bark_0
+      name: Slap_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -129,19 +144,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 22bb6990e1aa235b0800000000000000
-      internalID: -5390058758022448350
+      spriteID: 9ec5bfe10155cf630800000000000000
+      internalID: 3962135299906821353
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bark_1
+      name: Slap_1
       rect:
         serializedVersion: 2
-        x: 24
+        x: 20
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -150,19 +165,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7415db54521c6e070800000000000000
-      internalID: 8135402142719365447
+      spriteID: 11ef8a7ff8bc40810800000000000000
+      internalID: 1730731976012922385
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bark_2
+      name: Slap_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 40
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -171,19 +186,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 359639d2ea1ce8b80800000000000000
-      internalID: -8390556101911549613
+      spriteID: 8707bbdd0f1fecd10800000000000000
+      internalID: 2147920089116799096
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bark_3
+      name: Slap_3
       rect:
         serializedVersion: 2
-        x: 72
+        x: 60
         y: 0
-        width: 24
+        width: 20
         height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -192,8 +207,113 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2383629ad87d9e8d0800000000000000
-      internalID: -2816483088515319758
+      spriteID: e4796e8fa72d250a0800000000000000
+      internalID: -6894216653947103410
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slap_4
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f58ea82a380811320800000000000000
+      internalID: 2526942168787642463
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slap_5
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db54183d9d1022600800000000000000
+      internalID: 441917748503725501
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slap_6
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 146c0d5245be2e6c0800000000000000
+      internalID: -4115468362818992575
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slap_7
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6f2c954c20e13a9b0800000000000000
+      internalID: -5070175758256061706
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slap_8
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3d785802c8dfc500800000000000000
+      internalID: 418791618244017471
       vertices: []
       indices: 
       edges: []
