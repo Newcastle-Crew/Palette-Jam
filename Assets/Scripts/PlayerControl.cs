@@ -11,6 +11,7 @@ public class PlayerControl : MonoBehaviour
     public float catnip_speed = 1.5f;
     public float air_speed = 0.02f;
     public float catnip_air_speed = 10f;
+    public float air_speed_ineffectiveness_factor = 0.4f;
     public float ground_friction = 0.4f;
     public float normal_jump_gravity_scale = 1.6f;
     public float during_jump_gravity_scale = 0.6f;
@@ -229,8 +230,8 @@ public class PlayerControl : MonoBehaviour
             rb2d.velocity.x + (horizontal * (
                 ground_controls ?
                     (catnip_time > 0f ? catnip_speed : speed) :
-                    (catnip_time > 0f ? catnip_air_speed : air_speed))
-            ) * Time.fixedDeltaTime * Time.fixedDeltaTime,
+                    ((catnip_time > 0f ? catnip_air_speed : air_speed) / (1f + rb2d.velocity.x * rb2d.velocity.x * air_speed_ineffectiveness_factor))
+            )) * Time.fixedDeltaTime * Time.fixedDeltaTime,
             rb2d.velocity.y
         );
     }

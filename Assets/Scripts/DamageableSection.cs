@@ -25,7 +25,8 @@ public class DamageableSection : MonoBehaviour
         }
 
         var other_hardness = collision.collider.GetComponentInParent<Hardness>();
-        if (other_hardness == null) return;
+        float hardness = 1f;
+        if (other_hardness != null) hardness = other_hardness.hardness;
 
         float impulse_force = 0f;
         for (int i = 0; i < collision.contactCount; i++) {
@@ -33,7 +34,7 @@ public class DamageableSection : MonoBehaviour
             impulse_force += contact.normalImpulse;
         }
 
-        float damage = impulse_force * other_hardness.hardness;
+        float damage = impulse_force * hardness;
         if (damage < static_defense) return;
 
         breakable.Damage(damage);
