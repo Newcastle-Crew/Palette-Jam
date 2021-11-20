@@ -19,6 +19,14 @@ public class PlayerControl : MonoBehaviour
     public float weak_scratch_force = 0.5f;
     public float catnip_scratch_force = 1.5f;
 
+    public float bounce_jump_percent = 0.5f;
+    public float full_bounce_jump_percent = 2.0f;
+
+    // The point in time where a failed jump happened because you weren't on the ground.
+    // Used so that if you land just a fraction of a second after you failed a jump, it just jumps anyway.
+    float failed_jump_t = -100f;
+    public float jump_grace_period = 0.2f;
+
     bool right = true;
     public Transform scratch_pos;
 
@@ -34,6 +42,8 @@ public class PlayerControl : MonoBehaviour
 
     Vector2 ground_tilt = Vector2.up;
 
+    int bouncy_layer;
+
     Rigidbody2D rb2d;
     Animator animator;
 
@@ -47,6 +57,7 @@ public class PlayerControl : MonoBehaviour
         scratch_results = new List<Collider2D>();
         scratch_contact_filter = new ContactFilter2D();
         scratch_contact_filter.layerMask = (1 << LayerMask.NameToLayer("Pushable")) | (1 << LayerMask.NameToLayer("PushableBackground"));
+        bouncy_layer = LayerMask.NameToLayer("Bouncy");
         scratch_contact_filter.useLayerMask = true;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -64,17 +75,25 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    void Jump(float percent = 1f) {
+        // NOTE: Tilted jumps right now have less strength, this may be confusing if we don't have a graphic for it.
+        rb2d.AddForce(Vector2.up * Vector2.Dot(ground_tilt, Vector2.up) * (catnip_time > 0f ? catnip_jump_strength : jump_strength) * percent, ForceMode2D.Impulse);
+
+        on_ground = false;
+        holding_jump = true;
+        animator.SetBool("jumping", true);
+        rb2d.gravityScale = during_jump_gravity_scale;
+        low_grav_jump_timer = max_big_jump_time;
+    }
+
     void Update() {
         // We're on somewhat stable/straight ground, therefore we can jump!
-        if (on_ground && Input.GetButtonDown("Jump")) {
-            // NOTE: Tilted jumps right now have less strength, this may be confusing if we don't have a graphic for it.
-            rb2d.AddForce(Vector2.up * Vector2.Dot(ground_tilt, Vector2.up) * (catnip_time > 0f ? catnip_jump_strength : jump_strength), ForceMode2D.Impulse);
-
-            on_ground = false;
-            holding_jump = true;
-            animator.SetBool("jumping", true);
-            rb2d.gravityScale = during_jump_gravity_scale;
-            low_grav_jump_timer = max_big_jump_time;
+        if (Input.GetButtonDown("Jump")) {
+            if (on_ground) {
+                Jump();
+            } else {
+                failed_jump_t = Time.time;
+            }
         }
 
         // "Slash"
@@ -126,6 +145,7 @@ public class PlayerControl : MonoBehaviour
         int num_contacts = rb2d.GetContacts(contacts);
         Vector2 best = Vector2.zero;
         float best_angle_diff = 0f;
+        bool bouncy = false;
         for (int i = 0; i < num_contacts; i++) {
             var contact_normal = contacts[i].normal;
             var angle_diff = Vector2.Dot(contact_normal, Vector2.up);
@@ -133,14 +153,31 @@ public class PlayerControl : MonoBehaviour
                 best = contact_normal;
                 best_angle_diff = angle_diff;
             }
+
+            if (contacts[i].collider.gameObject.layer == bouncy_layer) {
+                bouncy = true;
+            }
         }
 
         var old_on_ground = on_ground;
         on_ground = best_angle_diff > 0.8f;
-        if (old_on_ground != on_ground) {
-            animator.SetBool("on_ground", on_ground);
-        }
         ground_tilt = best;
+        if (old_on_ground != on_ground) {
+            if (bouncy) {
+                // Super jump
+                rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                Jump(Input.GetButton("Jump") ? full_bounce_jump_percent : bounce_jump_percent);
+                failed_jump_t = -100f;
+            } else {
+                if (Input.GetButton("Jump") && (Time.time - failed_jump_t) <= jump_grace_period) {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x, 0f);
+                    Jump();
+                    failed_jump_t = -100f;
+                } else {
+                    animator.SetBool("on_ground", on_ground);
+                }
+            }
+        }
 
         if (on_ground) {
             rb2d.velocity = new Vector2(rb2d.velocity.x * Mathf.Exp(-ground_friction * Time.fixedDeltaTime), rb2d.velocity.y);
