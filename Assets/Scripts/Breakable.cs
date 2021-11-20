@@ -8,6 +8,9 @@ public class Breakable : MonoBehaviour
     public float health = 1f;
     public GameObject fragmentPrefab = null; 
     public int score = 5;
+    public Sprite broken_sprite = null;
+    public float break_delay = 2f;
+    public int pieces = 2;
 
     public int combo_counter = -1;
 
@@ -21,7 +24,10 @@ public class Breakable : MonoBehaviour
     }
 
     IEnumerator GetRekt() {
-        yield return new WaitForSeconds(2f);
+        if (broken_sprite != null) {
+            GetComponent<SpriteRenderer>().sprite = broken_sprite;
+        }
+        yield return new WaitForSeconds(break_delay);
         BreakApart();
         Destroy(gameObject);
     }
@@ -51,10 +57,10 @@ public class Breakable : MonoBehaviour
             new Vector2(uv_x, uv_y + uv_height),
         };
 
-        Split(vertices, uv);
+        Split(vertices, uv, pieces);
     }
 
-    public void Split(Vector3[] vertices, Vector2[] uvs, int recursion = 4) {
+    public void Split(Vector3[] vertices, Vector2[] uvs, int recursion) {
         Debug.Assert(vertices.Length == uvs.Length);
         Debug.Assert(vertices.Length >= 3);
 
@@ -170,6 +176,10 @@ public class Breakable : MonoBehaviour
 
         instance.GetComponent<PolygonCollider2D>().SetPath(0, points);
 
-        Destroy(instance, Random.Range(2f, 7f));
+        // Make it a  static object after a few seconds, which lets you have both the fun of seeing old
+        // destroyed objects forever, but also (hopefully) have decent performance.
+        float destroy_time = 4f;
+        Destroy(instance.GetComponent<Rigidbody2D>(), destroy_time);
+        Destroy(instance.GetComponent<PolygonCollider2D>(), destroy_time);
     }
 }

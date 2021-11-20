@@ -46,7 +46,7 @@ public class PlayerControl : MonoBehaviour
         contacts = new ContactPoint2D[4];
         scratch_results = new List<Collider2D>();
         scratch_contact_filter = new ContactFilter2D();
-        scratch_contact_filter.layerMask = 1 << LayerMask.NameToLayer("Pushable");
+        scratch_contact_filter.layerMask = (1 << LayerMask.NameToLayer("Pushable")) | (1 << LayerMask.NameToLayer("PushableBackground"));
         scratch_contact_filter.useLayerMask = true;
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -89,6 +89,11 @@ public class PlayerControl : MonoBehaviour
             var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
             var num_overlaps = Physics2D.OverlapCircle((Vector2)transform.position + local, .5f, scratch_contact_filter, scratch_results);
             for (int i = 0; i < num_overlaps; i++) {
+                var painting_fall = scratch_results[i].GetComponentInParent<PaintingFall>();
+                if (painting_fall != null) {
+                    painting_fall.Fall();
+                }
+
                 var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
                 if (overlapping_rb2d != null) {
                     Debug.Log("Slashing!!");
