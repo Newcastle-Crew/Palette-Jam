@@ -59,10 +59,12 @@ public class PlayerControl : MonoBehaviour
     {
         contacts = new ContactPoint2D[4];
         scratch_results = new List<Collider2D>();
+
         scratch_contact_filter = new ContactFilter2D();
-        scratch_contact_filter.layerMask = (1 << LayerMask.NameToLayer("Pushable")) | (1 << LayerMask.NameToLayer("PushableBackground"));
-        bouncy_layer = LayerMask.NameToLayer("Bouncy");
+        scratch_contact_filter.layerMask = LayerMask.GetMask("Pushable", "PushableBackground");
         scratch_contact_filter.useLayerMask = true;
+
+        bouncy_layer = LayerMask.NameToLayer("Bouncy");
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rb2d.gravityScale = normal_jump_gravity_scale;

@@ -1,0 +1,290 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
+public class Boss : MonoBehaviour
+{
+    struct Bark {
+        public int index;
+        public float time;
+        public float wanted_time;
+        public float force;
+    }
+
+    enum Plan {
+        Bark,
+        Zoom,
+    }
+
+    enum Action {
+        Bark,
+        Move,
+        Bite,
+        Tired,
+        Default,
+    }
+
+    Rigidbody2D rb2d;
+    Animator animator;
+    SpriteRenderer sprite;
+
+    public Vector2 wanted_position;
+    public float acceptable_pos_error = 0.4f;
+    public float movement_speed = 2000f;
+
+    public float action_timer = 0f;
+    Action action;
+
+    // Bite variables
+    public float bite_rebite_time = 0.3f;
+    public float bite_time = 1f;
+    public float bite_jump_strength = 100f;
+    public float bite_attack_delay = 0.3f;
+    public float bite_undirected_jump_strength = 5f;
+
+    // Scratch variables
+    public float scratch_force = 10f;
+    public Transform scratch_pos;
+    public float scratch_radius = 0.4f;
+    public float ground_friction = 23f;
+    Transform in_scratch_region = null;
+
+    // Bark
+    public Transform[] bark_target_points;
+    public Rigidbody2D vertical_bark_prefab;
+    public Rigidbody2D horizontal_bark_prefab;
+    public Vector2 bark_angle = Vector2.right + Vector2.up;
+    public float bark_buildup_time = 0.4f;
+    public float bark_speed = 0.1f;
+    public float horizontal_bark_strength = 4f;
+    public float bark_random_time = 0.4f;
+    public int bark_size = 3 * 10;
+    public int bark_simultaneous = 3;
+    Bark[] bark_places;
+
+    Plan plan = Plan.Bark;
+
+    bool right = true;
+    List<Collider2D> scratch_results = new List<Collider2D>();
+    ContactFilter2D scratch_contact_filter;
+
+    // Ground checking stuff
+    public bool on_ground = false;
+    public Vector2 ground_tilt = Vector2.up;
+    ContactPoint2D[] contacts;
+
+    void Awake()
+    {
+        bark_places = new Bark[bark_size];
+        rb2d = GetComponent<Rigidbody2D>();
+        wanted_position = rb2d.position;
+        sprite = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        contacts = new ContactPoint2D[4];
+
+        scratch_contact_filter = new ContactFilter2D();
+        scratch_contact_filter.layerMask = LayerMask.GetMask("Player");
+        scratch_contact_filter.useLayerMask = true;
+    }
+
+    void FixedUpdate()
+    {
+        // @Duplicate: This is roughly the same as in PlayerControl, but as we only have one type of boss and one type of player, it doesn't really matter...
+        // Figure out if we're on the ground or not. This is done by going through all of the contact points on the rigidbody,
+        // and trying to find a contact point that is vertical. If you can do that, it means we're right on top of the rigidbody.
+        // If it's slanted, it means that we're on a slope, and thus, if the slope is sloped enough, we may be currently slipping
+        // off. Could be used for feeding into an animation.
+        int num_contacts = rb2d.GetContacts(contacts);
+        Vector2 best = Vector2.zero;
+        float best_angle_diff = 0f;
+        for (int i = 0; i < num_contacts; i++) {
+            var contact_normal = contacts[i].normal;
+            var angle_diff = Vector2.Dot(contact_normal, Vector2.up);
+            if (angle_diff > best_angle_diff) {
+                best = contact_normal;
+                best_angle_diff = angle_diff;
+            }
+        }
+        var old_on_ground = on_ground;
+        on_ground = best_angle_diff > 0.8f;
+
+        var old_action_timer = action_timer;
+        action_timer += Time.fixedDeltaTime;
+
+        if (in_scratch_region != null && !(action == Action.Bite)) {
+            Bite();
+        }
+
+        switch (action) {
+            case Action.Bite:
+                if (old_action_timer < bite_attack_delay && action_timer >= bite_attack_delay) {
+                    // Do the actual attack
+                    Vector2 maybe_flip_horizontal(Vector2 input, bool flip) {
+                        return new Vector2(flip ? -input.x : input.x, input.y);
+                    }
+
+                    animator.SetTrigger("slash");
+
+                    // Find a slashable object
+                    var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
+                    var num_overlaps = Physics2D.OverlapCircle((Vector2)transform.position + local, scratch_radius, scratch_contact_filter, scratch_results);
+                    for (int i = 0; i < num_overlaps; i++) {
+                        var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
+                        if (overlapping_rb2d != null) {
+                            overlapping_rb2d.velocity = (Vector2.up * 0.7f + (right ? Vector2.right : Vector2.left)) * scratch_force;
+                        }
+                    }
+                }
+
+                if (in_scratch_region != null && action_timer >= bite_rebite_time) {
+                    Bite();
+                }
+
+                if (action_timer >= bite_time) {
+                    ResumeDefaultAction();
+                }
+                break;
+            case Action.Move:
+                var position_error = wanted_position - rb2d.position;
+                if (position_error.sqrMagnitude > acceptable_pos_error * acceptable_pos_error) {
+                    SetOrientation(position_error.x > 0f);
+                    rb2d.velocity = new Vector2(
+                        rb2d.velocity.x + Mathf.Sign(position_error.x) * movement_speed * Time.fixedDeltaTime * Time.fixedDeltaTime,
+                        rb2d.velocity.y
+                    );
+                } else {
+                    ResumeDefaultAction();
+                }
+                break;
+            case Action.Default:
+                switch (plan) {
+                    case Plan.Bark:
+                        bool all_done = true;
+                        for (int i = 0; i < bark_places.Length; i++) {
+                            var wanted_time = bark_places[i].wanted_time;
+                            if (old_action_timer < wanted_time && action_timer >= wanted_time) {
+                                var vel = new Vector2(right ? bark_angle.x : -bark_angle.x, bark_angle.y).normalized;
+
+                                var angle = Mathf.Rad2Deg * Mathf.Atan2(vel.y, vel.x);
+                                var instance = Instantiate(vertical_bark_prefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, angle)));
+                                instance.velocity = vel * bark_places[i].force;
+                                instance.angularVelocity = right ? (-2f * angle / bark_places[i].time) : (2f * (180f - angle) / bark_places[i].time);
+                            }
+
+                            if (action_timer < wanted_time) {
+                                all_done = false;
+                            }
+                        }
+
+                        if (all_done) {
+                            ResumeDefaultAction();
+                        }
+                        
+                        break;
+                }
+                break;
+        }
+
+        if (on_ground) {
+            // Friction
+            rb2d.velocity = new Vector2(rb2d.velocity.x * Mathf.Exp(-ground_friction * Time.fixedDeltaTime), rb2d.velocity.y);
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+            in_scratch_region = other.transform;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other) {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
+            in_scratch_region = null;
+        }
+    }
+
+    void ResumeDefaultAction() {
+        action = Action.Default;
+        action_timer = 0f;
+
+        switch (plan) {
+            case Plan.Bark:
+                var right_i = bark_target_points.Length - 1;
+                var target_i = 
+                      ((Vector2)bark_target_points[0      ].position - rb2d.position).sqrMagnitude
+                    < ((Vector2)bark_target_points[right_i].position - rb2d.position).sqrMagnitude
+                ? 0 : right_i;
+                var target = (Vector2)bark_target_points[target_i].position;
+
+                if (!MoveTo(target)) break;
+
+                // If we're on the left side, face right, otherwise, face left
+                SetOrientation(target_i == 0);
+
+                float min_time = 10000f;
+                for (int i = 0; i < bark_places.Length; i++) {
+                    var last_full_set = (i / bark_simultaneous) * bark_simultaneous;
+                    var num_picks = last_full_set + (bark_target_points.Length - 1) - i;
+                    var pick = Random.Range(0, num_picks);
+
+                    if (pick >= target_i) pick += 1;
+                    for (int j = last_full_set; j < i; j++) {
+                        if (pick >= bark_places[j].index) pick += 1;
+                    }
+
+                    bark_places[i].index = pick;
+
+                    var target_pos = (Vector2)bark_target_points[pick].position - rb2d.position;
+                    var g = Physics2D.gravity.y * vertical_bark_prefab.gravityScale;
+
+                    var vel = new Vector2(right ? bark_angle.x : -bark_angle.x, bark_angle.y).normalized;
+
+                    var inner = -2f * (target_pos.x * vel.y / vel.x - target_pos.y) / g;
+                    if (inner < 0f) {
+                        Debug.LogError("No valid bark strength to position");
+                        continue;
+                    }
+
+                    var t = Mathf.Sqrt(inner);
+
+                    var wanted_time = (float)(i / bark_simultaneous) * bark_speed - t + Random.Range(0f, bark_random_time);
+                    min_time = Mathf.Min(wanted_time, min_time);
+
+                    bark_places[i].wanted_time = wanted_time;
+                    bark_places[i].time = t;
+                    bark_places[i].force = target_pos.x / (vel.x * t);;
+                }
+
+                action_timer = min_time - bark_buildup_time;
+
+                break;
+        }
+    }
+
+    // Moves to a target, returns true if we're already there.
+    bool MoveTo(Vector2 position) {
+        if ((position - rb2d.position).sqrMagnitude > acceptable_pos_error * acceptable_pos_error) {
+            wanted_position = position;
+            action = Action.Move;
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    void Bite() {
+        // Bite!
+        var error = (Vector2)in_scratch_region.position - rb2d.position;
+        SetOrientation(error.x > 0f);
+        rb2d.AddForce(error.normalized * bite_jump_strength + Vector2.up * bite_undirected_jump_strength, ForceMode2D.Impulse);
+        action = Action.Bite;
+        action_timer = 0f;
+    }
+
+    void SetOrientation(bool right) {
+        this.right = right;
+        sprite.flipX = !right;
+    }
+}

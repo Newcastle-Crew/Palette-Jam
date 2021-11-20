@@ -1,10 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BoxCollider2D))]
 public class Room : MonoBehaviour
 {
+    [System.NonSerialized]
     public BoxCollider2D box;
 
     void Awake() {

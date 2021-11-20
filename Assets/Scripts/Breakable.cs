@@ -11,6 +11,7 @@ public class Breakable : MonoBehaviour
     public Sprite broken_sprite = null;
     public float break_delay = 2f;
     public int pieces = 2;
+    public bool despawn = false;
 
     public int combo_counter = -1;
 
@@ -170,16 +171,27 @@ public class Breakable : MonoBehaviour
         var sprite = GetComponent<SpriteRenderer>().sprite;
         instance.GetComponent<MeshRenderer>().material.mainTexture = sprite.texture;
 
+        var instance_rb2d = instance.GetComponent<Rigidbody2D>();
+        var rb2d = GetComponent<Rigidbody2D>();
+        if (instance_rb2d != null && rb2d != null) {
+            instance_rb2d.angularVelocity = rb2d.angularVelocity;
+            instance_rb2d.velocity = rb2d.GetPointVelocity(center);
+        }
+
         var points = new Vector2[vertices.Length];
         for(int i = 0; i < vertices.Length; i++)
             points[i] = (Vector2)vertices[i];
 
         instance.GetComponent<PolygonCollider2D>().SetPath(0, points);
 
-        // Make it a  static object after a few seconds, which lets you have both the fun of seeing old
-        // destroyed objects forever, but also (hopefully) have decent performance.
-        float destroy_time = 4f;
-        Destroy(instance.GetComponent<Rigidbody2D>(), destroy_time);
-        Destroy(instance.GetComponent<PolygonCollider2D>(), destroy_time);
+        if (despawn) {
+            Destroy(instance.gameObject, Random.Range(2f, 8f));
+        } else {
+            // Make it a  static object after a few seconds, which lets you have both the fun of seeing old
+            // destroyed objects forever, but also (hopefully) have decent performance.
+            float destroy_time = 4f;
+            Destroy(instance.GetComponent<Rigidbody2D>(), destroy_time);
+            Destroy(instance.GetComponent<PolygonCollider2D>(), destroy_time);
+        }
     }
 }
