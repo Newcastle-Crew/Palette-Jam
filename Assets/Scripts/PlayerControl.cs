@@ -3,6 +3,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Health))]
 public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl Instance = null;
@@ -19,6 +20,9 @@ public class PlayerControl : MonoBehaviour
 
     public float weak_scratch_force = 0.5f;
     public float catnip_scratch_force = 1.5f;
+    public float scratch_damage = 5f;
+    public float catnip_scratch_damage = 10f;
+    public float scratch_rate = 0.3f;
 
     public float bounce_jump_percent = 0.5f;
     public float bounce_strength = 0.5f;
@@ -43,12 +47,16 @@ public class PlayerControl : MonoBehaviour
     bool holding_jump = false;
 
     float catnip_time = -1f;
+    float scratch_time = -100f;
 
     Vector2 ground_tilt = Vector2.up;
 
     int bouncy_layer;
 
-    Rigidbody2D rb2d;
+    [System.NonSerialized]
+    public Health health;
+    [System.NonSerialized]
+    public Rigidbody2D rb2d;
     Animator animator;
 
     ContactPoint2D[] contacts;
@@ -61,10 +69,11 @@ public class PlayerControl : MonoBehaviour
         scratch_results = new List<Collider2D>();
 
         scratch_contact_filter = new ContactFilter2D();
-        scratch_contact_filter.layerMask = LayerMask.GetMask("Pushable", "PushableBackground");
+        scratch_contact_filter.layerMask = LayerMask.GetMask("Pushable", "PushableBackground", "Boss");
         scratch_contact_filter.useLayerMask = true;
 
         bouncy_layer = LayerMask.NameToLayer("Bouncy");
+        health = GetComponent<Health>();
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         rb2d.gravityScale = normal_jump_gravity_scale;
@@ -94,6 +103,26 @@ public class PlayerControl : MonoBehaviour
         low_grav_jump_timer = max_big_jump_time;
     }
 
+    public void Damage(float damage) {
+        this.health.health -= damage;
+
+        if (this.health.health <= 0f) {
+            Die();
+        } else {
+            animator.SetTrigger("damaged");
+        }
+    }
+    
+    void Die() {
+        // Destroy just the player controller
+        Destroy(this);
+
+        // We no longer do manual friction, so make sure it has some amount of friction.
+        rb2d.drag = 0.3f;
+
+        animator.SetTrigger("death");
+    }
+
     void Update() {
         // We're on somewhat stable/straight ground, therefore we can jump!
         if (Input.GetButtonDown("Jump")) {
@@ -105,7 +134,9 @@ public class PlayerControl : MonoBehaviour
         }
 
         // "Slash"
-        if (Input.GetButtonDown("Action")) {
+        if ((Time.time - scratch_time) >= scratch_rate && Input.GetButtonDown("Action")) {
+            scratch_time = Time.time;
+
             Vector2 maybe_flip_horizontal(Vector2 input, bool flip) {
                 return new Vector2(flip ? -input.x : input.x, input.y);
             }
@@ -119,6 +150,11 @@ public class PlayerControl : MonoBehaviour
                 var painting_fall = scratch_results[i].GetComponentInParent<PaintingFall>();
                 if (painting_fall != null) {
                     painting_fall.Fall();
+                }
+
+                var boss = scratch_results[i].GetComponent<Boss>();
+                if (boss != null) {
+                    boss.Damage(catnip_time > 0f ? catnip_scratch_damage : scratch_damage);
                 }
 
                 var breakable = scratch_results[i].GetComponentInParent<Breakable>();

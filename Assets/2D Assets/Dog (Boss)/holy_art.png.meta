@@ -1,40 +1,34 @@
 fileFormatVersion: 2
-guid: fbd9ceff6b894994b8c774c36dcae3ac
+guid: a1b0d0208129a754499ce1869accf028
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1696035957728390161
-    second: Dying_0
+      213: 653079109552126022
+    second: holy_art_0
   - first:
-      213: 5966049027011578701
-    second: Dying_1
+      213: -3164794775428169845
+    second: holy_art_1
   - first:
-      213: 7066051119365129051
-    second: Dying_2
+      213: 4758890851395167264
+    second: holy_art_2
   - first:
-      213: 1472727819937242052
-    second: Dying_3
+      213: 8177041281894255519
+    second: holy_art_3
   - first:
-      213: -8931253946334322236
-    second: Dying_4
+      213: -5313182508290678586
+    second: holy_art_4
   - first:
-      213: -2263788774785607426
-    second: Dying_5
+      213: 1711285256715418871
+    second: holy_art_5
   - first:
-      213: 4110606291435444657
-    second: Dying_6
+      213: 4513594784463440850
+    second: holy_art_6
   - first:
-      213: -5315950768213896313
-    second: Dying_7
+      213: 9036956419039140168
+    second: holy_art_7
   - first:
-      213: -6249636578027622931
-    second: Dying_8
-  - first:
-      213: -1550714600642797583
-    second: Dying_9
-  - first:
-      213: 9116486842806472905
-    second: Dying_10
+      213: 4504715229052389917
+    second: holy_art_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -136,232 +130,190 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Dying_0
+      name: holy_art_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 20
+        width: 21
         height: 20
-      alignment: 9
-      pivot: {x: 0.55, y: 0.45}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 11ca0b2b7b7898710800000000000000
-      internalID: 1696035957728390161
+      spriteID: 648351f6df3301900800000000000000
+      internalID: 653079109552126022
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_1
+      name: holy_art_1
       rect:
         serializedVersion: 2
-        x: 20
+        x: 21
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d4b07970bf9abc250800000000000000
-      internalID: 5966049027011578701
+      spriteID: b8f77976be36414d0800000000000000
+      internalID: -3164794775428169845
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_2
+      name: holy_art_2
       rect:
         serializedVersion: 2
-        x: 40
+        x: 42
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5382863e08af0260800000000000000
-      internalID: 7066051119365129051
+      spriteID: 024e342040afa0240800000000000000
+      internalID: 4758890851395167264
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_3
+      name: holy_art_3
       rect:
         serializedVersion: 2
-        x: 60
+        x: 63
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4cbd13e362e207410800000000000000
-      internalID: 1472727819937242052
+      spriteID: f9b0309d8bfaa7170800000000000000
+      internalID: 8177041281894255519
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_4
+      name: holy_art_4
       rect:
         serializedVersion: 2
-        x: 80
+        x: 84
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4c1efe90bdfcd0480800000000000000
-      internalID: -8931253946334322236
+      spriteID: 6c0e38eb8a8c346b0800000000000000
+      internalID: -5313182508290678586
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_5
+      name: holy_art_5
       rect:
         serializedVersion: 2
-        x: 100
+        x: 105
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ef813687a186590e0800000000000000
-      internalID: -2263788774785607426
+      spriteID: 7fcb2ebcfd4bfb710800000000000000
+      internalID: 1711285256715418871
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_6
+      name: holy_art_6
       rect:
         serializedVersion: 2
-        x: 120
+        x: 126
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1b9de74a4aecb0930800000000000000
-      internalID: 4110606291435444657
+      spriteID: 2dbcffbda8283ae30800000000000000
+      internalID: 4513594784463440850
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_7
+      name: holy_art_7
       rect:
         serializedVersion: 2
-        x: 140
+        x: 147
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 783552101f2f936b0800000000000000
-      internalID: -5315950768213896313
+      spriteID: 8499387bbf7b96d70800000000000000
+      internalID: 9036956419039140168
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Dying_8
+      name: holy_art_8
       rect:
         serializedVersion: 2
-        x: 160
+        x: 168
         y: 0
-        width: 20
+        width: 21
         height: 20
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ded206fe4a4d449a0800000000000000
-      internalID: -6249636578027622931
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dying_9
-      rect:
-        serializedVersion: 2
-        x: 180
-        y: 0
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 1ff9ca86941ca7ae0800000000000000
-      internalID: -1550714600642797583
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Dying_10
-      rect:
-        serializedVersion: 2
-        x: 200
-        y: 0
-        width: 20
-        height: 20
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9c090097b74448e70800000000000000
-      internalID: 9116486842806472905
+      spriteID: d1ac5f142a6f38e30800000000000000
+      internalID: 4504715229052389917
       vertices: []
       indices: 
       edges: []

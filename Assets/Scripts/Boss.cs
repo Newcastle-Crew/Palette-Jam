@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Health))]
 public class Boss : MonoBehaviour
 {
     struct Bark {
@@ -27,6 +28,8 @@ public class Boss : MonoBehaviour
         Default,
     }
 
+    [System.NonSerialized]
+    public Health health;
     Rigidbody2D rb2d;
     Animator animator;
     SpriteRenderer sprite;
@@ -40,12 +43,18 @@ public class Boss : MonoBehaviour
     
     // Charge
     public int num_charges = 5;
-    public float charge_delay = 0.5f;
+    public float charge_delay = 0.2f;
     public float charge_backup = -100f;
     public float charge_speed = 6000f;
     public float charge_min_distance = 5f;
     public float charge_friction = 0.5f;
     int charge_counter = 0;
+
+    public float between_charge_tired_time = 1f;
+    public float tired_wakeup_time_after_attack = 0.3f;
+    public float tired_wakeup_signalling_time = 0.3f;
+    public float tired_wakeup_jump = 0.6f;
+    bool tired_interruptable = false;
 
     // Bite variables
     public float bite_rebite_time = 0.3f;
@@ -53,6 +62,7 @@ public class Boss : MonoBehaviour
     public float bite_jump_strength = 100f;
     public float bite_attack_delay = 0.3f;
     public float bite_undirected_jump_strength = 5f;
+    public float bite_damage = 6f;
 
     // Scratch variables
     public float scratch_force = 10f;
@@ -94,13 +104,14 @@ public class Boss : MonoBehaviour
         wanted_position = rb2d.position;
         sprite = GetComponent<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        health = GetComponent<Health>();
         contacts = new ContactPoint2D[4];
 
         scratch_contact_filter = new ContactFilter2D();
         scratch_contact_filter.layerMask = LayerMask.GetMask("Player");
         scratch_contact_filter.useLayerMask = true;
 
-        BeginCharge();
+        BeginTired(false, 0.5f);
     }
 
     void FixedUpdate()
@@ -127,19 +138,27 @@ public class Boss : MonoBehaviour
         var old_action_timer = action_timer;
         action_timer += Time.fixedDeltaTime;
 
-        if (in_scratch_region != null && !(action == Action.Bite)) {
+        if (in_scratch_region != null && !(action == Action.Bite || action == Action.Tired)) {
             Bite();
         }
 
         switch (action) {
+            case Action.Tired:
+                if (old_action_timer < -tired_wakeup_signalling_time && action_timer >= -tired_wakeup_signalling_time) {
+                    animator.SetTrigger("tired_wake_up");
+                    rb2d.AddForce(Vector2.up * tired_wakeup_jump, ForceMode2D.Impulse);
+                }
+
+                if (action_timer >= 0f) {
+                    ResumeDefaultAction();
+                }
+                break;
             case Action.Bite:
                 if (old_action_timer < bite_attack_delay && action_timer >= bite_attack_delay) {
                     // Do the actual attack
                     Vector2 maybe_flip_horizontal(Vector2 input, bool flip) {
                         return new Vector2(flip ? -input.x : input.x, input.y);
                     }
-
-                    animator.SetTrigger("slash");
 
                     // Find a slashable object
                     var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
@@ -148,6 +167,11 @@ public class Boss : MonoBehaviour
                         var overlapping_rb2d = scratch_results[i].GetComponentInParent<Rigidbody2D>();
                         if (overlapping_rb2d != null) {
                             overlapping_rb2d.velocity = (Vector2.up * 0.7f + (right ? Vector2.right : Vector2.left)) * scratch_force;
+                        }
+
+                        var player = scratch_results[i].GetComponentInParent<PlayerControl>();
+                        if (player != null) {
+                            player.Damage(bite_damage);
                         }
                     }
                 }
@@ -184,7 +208,7 @@ public class Boss : MonoBehaviour
                 } else {
                     charge_counter += 1;
 
-                    ResumeDefaultAction();
+                    BeginTired(true, between_charge_tired_time);
                 }
                 break;
             }
@@ -203,6 +227,7 @@ public class Boss : MonoBehaviour
                         for (int i = 0; i < bark_places.Length; i++) {
                             var wanted_time = bark_places[i].wanted_time;
                             if (old_action_timer < wanted_time && action_timer >= wanted_time) {
+                                animator.SetTrigger("vertical_bark");
                                 var vel = new Vector2(right ? bark_angle.x : -bark_angle.x, bark_angle.y).normalized;
 
                                 var angle = Mathf.Rad2Deg * Mathf.Atan2(vel.y, vel.x);
@@ -227,6 +252,24 @@ public class Boss : MonoBehaviour
         }
     }
 
+    public void Damage(float damage) {
+        health.health -= damage;
+
+        if (health.health < 0f) {
+            Die();
+        } else {
+            if (action == Action.Tired && tired_interruptable) {
+                action_timer = Mathf.Max(action_timer, -tired_wakeup_time_after_attack);
+            }
+        }
+    }
+
+    void Die() {
+        // TODO: Unlock the room
+
+        Destroy(this);
+    }
+
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             in_scratch_region = other.transform;
@@ -237,6 +280,14 @@ public class Boss : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Player")) {
             in_scratch_region = null;
         }
+    }
+
+    void BeginTired(bool interruptable, float time) {
+        action = Action.Tired;
+        action_timer = -time;
+        tired_interruptable = interruptable;
+
+        animator.SetTrigger("tired");
     }
 
     void ResumeDefaultAction() {
@@ -341,6 +392,7 @@ public class Boss : MonoBehaviour
     // Moves to a target, returns true if we're already there.
     bool MoveTo(Vector2 position) {
         if ((position - rb2d.position).sqrMagnitude > acceptable_pos_error * acceptable_pos_error) {
+            animator.SetTrigger("moving");
             wanted_position = position;
             action = Action.Move;
             return false;
@@ -350,6 +402,8 @@ public class Boss : MonoBehaviour
     }
 
     void Bite() {
+        animator.SetTrigger("slash");
+
         // Bite!
         var error = (Vector2)in_scratch_region.position - rb2d.position;
         SetOrientation(error.x > 0f);

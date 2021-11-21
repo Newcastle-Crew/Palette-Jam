@@ -33,6 +33,14 @@ public class Breakable : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void BreakImmediate() {
+        if (broken_sprite != null) {
+            GetComponent<SpriteRenderer>().sprite = broken_sprite;
+        }
+        BreakApart();
+        Destroy(gameObject);
+    }
+
     public void BreakApart() {
         Score.AddScore((Vector2)transform.position, score + combo_counter);
 
