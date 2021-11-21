@@ -23,6 +23,7 @@ public class Boss : MonoBehaviour
         Move,
         Bite,
         Tired,
+        Charge,
         Default,
     }
 
@@ -36,6 +37,15 @@ public class Boss : MonoBehaviour
 
     public float action_timer = 0f;
     Action action;
+    
+    // Charge
+    public int num_charges = 5;
+    public float charge_delay = 0.5f;
+    public float charge_backup = -100f;
+    public float charge_speed = 6000f;
+    public float charge_min_distance = 5f;
+    public float charge_friction = 0.5f;
+    int charge_counter = 0;
 
     // Bite variables
     public float bite_rebite_time = 0.3f;
@@ -57,12 +67,14 @@ public class Boss : MonoBehaviour
     public Rigidbody2D horizontal_bark_prefab;
     public Vector2 bark_angle = Vector2.right + Vector2.up;
     public float bark_buildup_time = 0.4f;
+    public float bark_end_time = 1f;
     public float bark_speed = 0.1f;
     public float horizontal_bark_strength = 4f;
     public float bark_random_time = 0.4f;
     public int bark_size = 3 * 10;
     public int bark_simultaneous = 3;
     Bark[] bark_places;
+    float local_bark_end_time = 0f;
 
     Plan plan = Plan.Bark;
 
@@ -87,6 +99,8 @@ public class Boss : MonoBehaviour
         scratch_contact_filter = new ContactFilter2D();
         scratch_contact_filter.layerMask = LayerMask.GetMask("Player");
         scratch_contact_filter.useLayerMask = true;
+
+        BeginCharge();
     }
 
     void FixedUpdate()
@@ -146,7 +160,7 @@ public class Boss : MonoBehaviour
                     ResumeDefaultAction();
                 }
                 break;
-            case Action.Move:
+            case Action.Move: {
                 var position_error = wanted_position - rb2d.position;
                 if (position_error.sqrMagnitude > acceptable_pos_error * acceptable_pos_error) {
                     SetOrientation(position_error.x > 0f);
@@ -158,28 +172,48 @@ public class Boss : MonoBehaviour
                     ResumeDefaultAction();
                 }
                 break;
+            }
+            case Action.Charge: {
+                var position_error = wanted_position - rb2d.position;
+                if (position_error.sqrMagnitude > acceptable_pos_error * acceptable_pos_error) {
+                    SetOrientation(position_error.x > 0f);
+                    rb2d.velocity = new Vector2(
+                        rb2d.velocity.x + Mathf.Sign(position_error.x) * (action_timer >= charge_delay ? charge_speed : charge_backup) * Time.fixedDeltaTime * Time.fixedDeltaTime,
+                        rb2d.velocity.y
+                    );
+                } else {
+                    charge_counter += 1;
+
+                    ResumeDefaultAction();
+                }
+                break;
+            }
             case Action.Default:
                 switch (plan) {
+                    case Plan.Zoom:
+                        if(charge_counter > num_charges) {
+                            BeginBark();
+                            break;
+                        }
+
+                        ChargeToRandomSpot();
+
+                        break;
                     case Plan.Bark:
-                        bool all_done = true;
                         for (int i = 0; i < bark_places.Length; i++) {
                             var wanted_time = bark_places[i].wanted_time;
                             if (old_action_timer < wanted_time && action_timer >= wanted_time) {
                                 var vel = new Vector2(right ? bark_angle.x : -bark_angle.x, bark_angle.y).normalized;
 
                                 var angle = Mathf.Rad2Deg * Mathf.Atan2(vel.y, vel.x);
-                                var instance = Instantiate(vertical_bark_prefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, angle)));
+                                var instance = Instantiate(vertical_bark_prefab, transform.position, Quaternion.Euler(new Vector3(0f, 0f, right ? angle : angle + 180f)));
                                 instance.velocity = vel * bark_places[i].force;
                                 instance.angularVelocity = right ? (-2f * angle / bark_places[i].time) : (2f * (180f - angle) / bark_places[i].time);
                             }
-
-                            if (action_timer < wanted_time) {
-                                all_done = false;
-                            }
                         }
 
-                        if (all_done) {
-                            ResumeDefaultAction();
+                        if (action_timer >= local_bark_end_time) {
+                            BeginCharge();
                         }
                         
                         break;
@@ -189,7 +223,7 @@ public class Boss : MonoBehaviour
 
         if (on_ground) {
             // Friction
-            rb2d.velocity = new Vector2(rb2d.velocity.x * Mathf.Exp(-ground_friction * Time.fixedDeltaTime), rb2d.velocity.y);
+            rb2d.velocity = new Vector2(rb2d.velocity.x * Mathf.Exp(-(action == Action.Charge ? charge_friction : ground_friction) * Time.fixedDeltaTime), rb2d.velocity.y);
         }
     }
 
@@ -220,10 +254,13 @@ public class Boss : MonoBehaviour
 
                 if (!MoveTo(target)) break;
 
+                animator.SetTrigger("barking");
+
                 // If we're on the left side, face right, otherwise, face left
                 SetOrientation(target_i == 0);
 
                 float min_time = 10000f;
+                local_bark_end_time = -10000f;
                 for (int i = 0; i < bark_places.Length; i++) {
                     var last_full_set = (i / bark_simultaneous) * bark_simultaneous;
                     var num_picks = last_full_set + (bark_target_points.Length - 1) - i;
@@ -249,8 +286,10 @@ public class Boss : MonoBehaviour
 
                     var t = Mathf.Sqrt(inner);
 
-                    var wanted_time = (float)(i / bark_simultaneous) * bark_speed - t + Random.Range(0f, bark_random_time);
+                    var wanted_end_time = (float)(i / bark_simultaneous) * bark_speed + Random.Range(0f, bark_random_time);
+                    var wanted_time = wanted_end_time - t;
                     min_time = Mathf.Min(wanted_time, min_time);
+                    local_bark_end_time = Mathf.Max(local_bark_end_time, wanted_end_time + bark_end_time);
 
                     bark_places[i].wanted_time = wanted_time;
                     bark_places[i].time = t;
@@ -261,6 +300,42 @@ public class Boss : MonoBehaviour
 
                 break;
         }
+    }
+
+    void BeginBark() {
+        plan = Plan.Bark;
+        ResumeDefaultAction();
+    }
+
+    void BeginCharge() {
+        plan = Plan.Zoom;
+
+        charge_counter = 0;
+        ChargeToRandomSpot();
+    }
+
+    void ChargeToRandomSpot() {
+        int num = 0;
+        for (int i = 0; i < bark_target_points.Length; i++) {
+            if (i >= 2 && i < bark_target_points.Length - 2) continue;
+
+            if (((Vector2)bark_target_points[i].position - rb2d.position).sqrMagnitude >= charge_min_distance * charge_min_distance) {
+                num += 1;
+            }
+        }
+
+        int picked = Random.Range(0, num);
+        for (int i = 0; i <= picked; i++) {
+            if (i >= 2 && i < bark_target_points.Length - 2) { picked += 1; continue; }
+            if (((Vector2)bark_target_points[i].position - rb2d.position).sqrMagnitude < charge_min_distance * charge_min_distance) {
+                picked += 1;
+            }
+        }
+
+        animator.SetTrigger("zooming");
+        action_timer = 0f;
+        wanted_position = (Vector2)bark_target_points[picked].position;
+        action = Action.Charge;
     }
 
     // Moves to a target, returns true if we're already there.
