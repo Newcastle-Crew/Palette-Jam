@@ -34,6 +34,9 @@ public class Boss : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
 
+    [System.NonSerialized]
+    public BossStartTrigger start_trigger;
+
     public Vector2 wanted_position;
     public float acceptable_pos_error = 0.4f;
     public float movement_speed = 2000f;
@@ -276,7 +279,7 @@ public class Boss : MonoBehaviour
     }
 
     void Die() {
-        // TODO: Unlock the room
+        start_trigger.Win();
 
         rb2d.drag = 1.6f;
         animator.SetTrigger("dead");

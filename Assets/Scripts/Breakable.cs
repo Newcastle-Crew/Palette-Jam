@@ -29,21 +29,22 @@ public class Breakable : MonoBehaviour
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
         yield return new WaitForSeconds(break_delay);
-        BreakApart();
-        Destroy(gameObject);
+
+        BreakImmediate();
     }
 
     public void BreakImmediate() {
         if (broken_sprite != null) {
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
+
+        Score.AddScore((Vector2)transform.position, score + combo_counter);
+
         BreakApart();
         Destroy(gameObject);
     }
 
     public void BreakApart() {
-        Score.AddScore((Vector2)transform.position, score + combo_counter);
-
         var sprite = GetComponent<SpriteRenderer>().sprite;
         var width = sprite.rect.width / sprite.pixelsPerUnit;
         var height = sprite.rect.height / sprite.pixelsPerUnit;
@@ -65,6 +66,11 @@ public class Breakable : MonoBehaviour
             new Vector2(uv_x + uv_width, uv_y + uv_height),
             new Vector2(uv_x, uv_y + uv_height),
         };
+
+        if (pieces == -1) {
+            InstantiatePolygon(vertices, uv);
+            return;
+        }
 
         Split(vertices, uv, 0);
     }
