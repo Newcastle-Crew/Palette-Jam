@@ -15,6 +15,14 @@ public class Health : MonoBehaviour
             var local_scale = health_bar_blocker.localScale;
             local_scale.x = Mathf.Min(1f, 1f - (value / max_health)) * health_bar_pixels / 16f;
             health_bar_blocker.localScale = local_scale;
+
+            if (_health > 0f && value <= 0f) {
+                var breaking = health_bar.GetComponent<Breakable>();
+                if (breaking != null) {
+                    breaking.BreakImmediate();
+                }
+            }
+
             _health = value;
         }
     }

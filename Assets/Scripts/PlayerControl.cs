@@ -52,6 +52,7 @@ public class PlayerControl : MonoBehaviour
     Vector2 ground_tilt = Vector2.up;
 
     int bouncy_layer;
+    int boss_layer;
 
     [System.NonSerialized]
     public Health health;
@@ -73,6 +74,7 @@ public class PlayerControl : MonoBehaviour
         scratch_contact_filter.useLayerMask = true;
 
         bouncy_layer = LayerMask.NameToLayer("Bouncy");
+        boss_layer = LayerMask.NameToLayer("Boss");
         health = GetComponent<Health>();
         rb2d = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
@@ -203,7 +205,7 @@ public class PlayerControl : MonoBehaviour
                 best_angle_diff = angle_diff;
             }
 
-            if (contacts[i].collider.gameObject.layer == bouncy_layer) {
+            if (contacts[i].collider.gameObject.layer == bouncy_layer || contacts[i].collider.gameObject.layer == boss_layer) {
                 bouncy = true;
             }
         }

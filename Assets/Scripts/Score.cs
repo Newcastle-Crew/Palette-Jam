@@ -27,6 +27,7 @@ public class Score : MonoBehaviour
     }
 
     public static void AddScore(Vector2 pos, int addition) {
+        if (addition == 0) return;
         if (Instance == null) return;
 
         Instance._AddScore(pos, addition);

@@ -79,7 +79,8 @@ public class Boss : MonoBehaviour
     public float bark_buildup_time = 0.4f;
     public float bark_end_time = 1f;
     public float bark_speed = 0.1f;
-    public float horizontal_bark_strength = 4f;
+    public float horizontal_bark_speed = 0.1f;
+    public float horizontal_bark_buildup_time = 0.3f;
     public float bark_random_time = 0.4f;
     public int bark_size = 3 * 10;
     public int bark_simultaneous = 3;
@@ -206,8 +207,6 @@ public class Boss : MonoBehaviour
                         rb2d.velocity.y
                     );
                 } else {
-                    charge_counter += 1;
-
                     BeginTired(true, between_charge_tired_time);
                 }
                 break;
@@ -215,11 +214,12 @@ public class Boss : MonoBehaviour
             case Action.Default:
                 switch (plan) {
                     case Plan.Zoom:
-                        if(charge_counter > num_charges) {
+                        if(charge_counter >= num_charges) {
                             BeginBark();
                             break;
                         }
 
+                        charge_counter += 1;
                         ChargeToRandomSpot();
 
                         break;
@@ -237,7 +237,18 @@ public class Boss : MonoBehaviour
                             }
                         }
 
-                        if (action_timer >= local_bark_end_time) {
+                        var horizontal_bark_time = (float)(bark_places.Length / bark_simultaneous) * bark_speed;
+                        if (old_action_timer < horizontal_bark_time && action_timer >= horizontal_bark_time) {
+                            animator.SetTrigger("horizontal_bark_buildup");
+                        }
+
+                        if (old_action_timer < horizontal_bark_time + horizontal_bark_buildup_time && action_timer >= horizontal_bark_time + horizontal_bark_buildup_time) {
+                            animator.SetTrigger("horizontal_bark");
+                            var instance = Instantiate(horizontal_bark_prefab, transform.position + Vector3.up * 0.3f, Quaternion.identity);
+                            instance.velocity = (right ? Vector2.right : Vector2.left) * horizontal_bark_speed;
+                        }
+
+                        if (action_timer >= local_bark_end_time + bark_end_time) {
                             BeginCharge();
                         }
                         
@@ -267,6 +278,8 @@ public class Boss : MonoBehaviour
     void Die() {
         // TODO: Unlock the room
 
+        rb2d.drag = 1.6f;
+        animator.SetTrigger("dead");
         Destroy(this);
     }
 
@@ -340,7 +353,7 @@ public class Boss : MonoBehaviour
                     var wanted_end_time = (float)(i / bark_simultaneous) * bark_speed + Random.Range(0f, bark_random_time);
                     var wanted_time = wanted_end_time - t;
                     min_time = Mathf.Min(wanted_time, min_time);
-                    local_bark_end_time = Mathf.Max(local_bark_end_time, wanted_end_time + bark_end_time);
+                    local_bark_end_time = Mathf.Max(local_bark_end_time, wanted_end_time);
 
                     bark_places[i].wanted_time = wanted_time;
                     bark_places[i].time = t;
