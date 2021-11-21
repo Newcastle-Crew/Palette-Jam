@@ -18,6 +18,12 @@ public class Score : MonoBehaviour
         text.text = score.ToString();
     }
 
+    public static int GetScore() {
+        if (Instance == null) return 0;
+
+        return Instance.score;
+    }
+
     void _AddScore(Vector2 pos, int addition) {
         score += addition;
         text.text = score.ToString();
@@ -27,6 +33,7 @@ public class Score : MonoBehaviour
     }
 
     public static void AddScore(Vector2 pos, int addition) {
+        if (addition == 0) return;
         if (Instance == null) return;
 
         Instance._AddScore(pos, addition);

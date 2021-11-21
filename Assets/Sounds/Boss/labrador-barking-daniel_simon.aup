@@ -1,0 +1,128 @@
+<?xml version="1.0" standalone="no" ?>
+<!DOCTYPE project PUBLIC "-//audacityproject-1.3.0//DTD//EN" "http://audacity.sourceforge.net/xml/audacityproject-1.3.0.dtd" >
+<project xmlns="http://audacity.sourceforge.net/xml/" projname="labrador-barking-daniel_simon_data" version="1.3.0" audacityversion="2.4.2" sel0="0.2636831876" sel1="0.3525947522" vpos="736" h="0.1701676385" zoom="652.2979397781" rate="44100.0" snapto="off" selectionformat="hh:mm:ss + milliseconds" frequencyformat="Hz" bandwidthformat="octaves">
+	<tags>
+		<tag name="TITLE" value="SoundBible.com Must Credit"/>
+		<tag name="ARTIST" value="SoundBible.com Must Credit"/>
+		<tag name="Copyright" value="Attribution 3.0 SoundBible.com"/>
+		<tag name="Copyright message" value="Attribution 3.0 SoundBible.com"/>
+	</tags>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="0" linked="1" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="946500">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808c47.au" len="262144" min="-0.977478" max="0.977478" rms="0.207792"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e080863c.au" len="262144" min="-0.977478" max="0.977631" rms="0.215915"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e080880f.au" len="262144" min="-0.97757" max="0.977417" rms="0.216163"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e0808024.au" len="160068" min="-0.977417" max="0.977509" rms="0.164825"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="1" linked="0" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="946500">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808dc4.au" len="262144" min="-0.97757" max="0.977478" rms="0.207792"/>
+				</waveblock>
+				<waveblock start="262144">
+					<simpleblockfile filename="e0808d68.au" len="262144" min="-0.97757" max="0.977478" rms="0.215915"/>
+				</waveblock>
+				<waveblock start="524288">
+					<simpleblockfile filename="e08089e2.au" len="262144" min="-0.97757" max="0.9776" rms="0.216163"/>
+				</waveblock>
+				<waveblock start="786432">
+					<simpleblockfile filename="e0808eee.au" len="160068" min="-0.977509" max="0.977478" rms="0.164825"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="0" linked="1" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="31336">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808aec.au" len="31336" min="-0.977417" max="0.977631" rms="0.230385"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="1" linked="0" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="31336">
+				<waveblock start="0">
+					<simpleblockfile filename="e08083c2.au" len="31336" min="-0.977386" max="0.977478" rms="0.230385"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="0" linked="1" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="19116">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808bf2.au" len="19116" min="-0.977356" max="0.977356" rms="0.255243"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="1" linked="0" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="19116">
+				<waveblock start="0">
+					<simpleblockfile filename="e08083bb.au" len="19116" min="-0.977478" max="0.977386" rms="0.255243"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="0" linked="1" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="16226">
+				<waveblock start="0">
+					<simpleblockfile filename="e080830f.au" len="16226" min="-0.977386" max="0.977386" rms="0.305271"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="0" height="150" minimized="0" channel="1" linked="0" mute="1" solo="0" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="16226">
+				<waveblock start="0">
+					<simpleblockfile filename="e08085e9.au" len="16226" min="-0.977295" max="0.977417" rms="0.305271"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="1" height="150" minimized="0" channel="0" linked="1" mute="0" solo="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="15549">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808f49.au" len="15549" min="-0.977478" max="0.977386" rms="0.288429"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+	<wavetrack name="labrador-barking-daniel_simon" isSelected="1" height="150" minimized="0" channel="1" linked="0" mute="0" solo="1" rate="44100" gain="1.0" pan="0.0" colorindex="0">
+		<waveclip offset="0.00000000" colorindex="0">
+			<sequence maxsamples="262144" sampleformat="262159" numsamples="15549">
+				<waveblock start="0">
+					<simpleblockfile filename="e0808b63.au" len="15549" min="-0.977448" max="0.977448" rms="0.288429"/>
+				</waveblock>
+			</sequence>
+			<envelope numpoints="0"/>
+		</waveclip>
+	</wavetrack>
+</project>

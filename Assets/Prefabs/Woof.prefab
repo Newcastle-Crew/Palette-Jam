@@ -123,11 +123,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 1
   fragmentPrefab: {fileID: 8382533931481676928, guid: d7a57f1886ff1214987e127ad2b4acee, type: 3}
-  score: -1
+  score: 0
   broken_sprite: {fileID: 0}
   break_delay: 0.4
   pieces: 2
   despawn: 1
+  break_sound:
+    clips:
+    - {fileID: 8300000, guid: 186823ebac7c03b498344f42d56831a4, type: 3}
+    volume: 0.3
   combo_counter: 0
 --- !u!114 &8913722139230757120
 MonoBehaviour:

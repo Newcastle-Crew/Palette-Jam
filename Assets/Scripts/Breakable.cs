@@ -13,6 +13,8 @@ public class Breakable : MonoBehaviour
     public int pieces = 2;
     public bool despawn = false;
 
+    public SoundEffect break_sound;
+
     public int combo_counter = -1;
 
     public void Damage(float damage) {
@@ -25,10 +27,15 @@ public class Breakable : MonoBehaviour
     }
 
     IEnumerator GetRekt() {
+        break_sound.Play();
         if (broken_sprite != null) {
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
+
         yield return new WaitForSeconds(break_delay);
+
+        Score.AddScore((Vector2)transform.position, score + combo_counter);
+
         BreakApart();
         Destroy(gameObject);
     }
@@ -37,13 +44,16 @@ public class Breakable : MonoBehaviour
         if (broken_sprite != null) {
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
+
+        break_sound.Play();
+
+        Score.AddScore((Vector2)transform.position, score + combo_counter);
+
         BreakApart();
         Destroy(gameObject);
     }
 
     public void BreakApart() {
-        Score.AddScore((Vector2)transform.position, score + combo_counter);
-
         var sprite = GetComponent<SpriteRenderer>().sprite;
         var width = sprite.rect.width / sprite.pixelsPerUnit;
         var height = sprite.rect.height / sprite.pixelsPerUnit;
@@ -65,6 +75,11 @@ public class Breakable : MonoBehaviour
             new Vector2(uv_x + uv_width, uv_y + uv_height),
             new Vector2(uv_x, uv_y + uv_height),
         };
+
+        if (pieces == -1) {
+            InstantiatePolygon(vertices, uv);
+            return;
+        }
 
         Split(vertices, uv, 0);
     }

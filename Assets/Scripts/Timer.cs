@@ -1,16 +1,24 @@
-#region 'Using' information
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-#endregion
 
 public class Timer : MonoBehaviour
 {
+    static Timer instance;
     float countdown = 183.0f; // Counts down for 3 minutes and 3 seconds.
+    static bool active;
     public Text timerUI;
+
+    void Awake() {
+        instance = this;
+    }
+
+    public static void Disable() {
+        if (instance == null) return;
+
+        instance.timerUI.enabled = false;
+        instance.enabled = false;
+    }
 
     void Update()
     {

@@ -34,6 +34,9 @@ public class Boss : MonoBehaviour
     Animator animator;
     SpriteRenderer sprite;
 
+    [System.NonSerialized]
+    public BossStartTrigger start_trigger;
+
     public Vector2 wanted_position;
     public float acceptable_pos_error = 0.4f;
     public float movement_speed = 2000f;
@@ -48,6 +51,7 @@ public class Boss : MonoBehaviour
     public float charge_speed = 6000f;
     public float charge_min_distance = 5f;
     public float charge_friction = 0.5f;
+    public SoundEffect charge_sound;
     int charge_counter = 0;
 
     public float between_charge_tired_time = 1f;
@@ -63,6 +67,7 @@ public class Boss : MonoBehaviour
     public float bite_attack_delay = 0.3f;
     public float bite_undirected_jump_strength = 5f;
     public float bite_damage = 6f;
+    public SoundEffect bite_sound;
 
     // Scratch variables
     public float scratch_force = 10f;
@@ -79,7 +84,10 @@ public class Boss : MonoBehaviour
     public float bark_buildup_time = 0.4f;
     public float bark_end_time = 1f;
     public float bark_speed = 0.1f;
-    public float horizontal_bark_strength = 4f;
+    public float horizontal_bark_speed = 0.1f;
+    public float horizontal_bark_buildup_time = 0.3f;
+    public SoundEffect vertical_bark_sound;
+    public SoundEffect horizontal_bark_sound;
     public float bark_random_time = 0.4f;
     public int bark_size = 3 * 10;
     public int bark_simultaneous = 3;
@@ -87,6 +95,9 @@ public class Boss : MonoBehaviour
     float local_bark_end_time = 0f;
 
     Plan plan = Plan.Bark;
+
+    public SoundEffect damaged_sound;
+    public SoundEffect death_sound;
 
     bool right = true;
     List<Collider2D> scratch_results = new List<Collider2D>();
@@ -206,8 +217,6 @@ public class Boss : MonoBehaviour
                         rb2d.velocity.y
                     );
                 } else {
-                    charge_counter += 1;
-
                     BeginTired(true, between_charge_tired_time);
                 }
                 break;
@@ -215,11 +224,12 @@ public class Boss : MonoBehaviour
             case Action.Default:
                 switch (plan) {
                     case Plan.Zoom:
-                        if(charge_counter > num_charges) {
+                        if(charge_counter >= num_charges) {
                             BeginBark();
                             break;
                         }
 
+                        charge_counter += 1;
                         ChargeToRandomSpot();
 
                         break;
@@ -227,6 +237,7 @@ public class Boss : MonoBehaviour
                         for (int i = 0; i < bark_places.Length; i++) {
                             var wanted_time = bark_places[i].wanted_time;
                             if (old_action_timer < wanted_time && action_timer >= wanted_time) {
+                                vertical_bark_sound.Play();
                                 animator.SetTrigger("vertical_bark");
                                 var vel = new Vector2(right ? bark_angle.x : -bark_angle.x, bark_angle.y).normalized;
 
@@ -237,7 +248,19 @@ public class Boss : MonoBehaviour
                             }
                         }
 
-                        if (action_timer >= local_bark_end_time) {
+                        var horizontal_bark_time = (float)(bark_places.Length / bark_simultaneous) * bark_speed;
+                        if (old_action_timer < horizontal_bark_time && action_timer >= horizontal_bark_time) {
+                            horizontal_bark_sound.Play();
+                            animator.SetTrigger("horizontal_bark_buildup");
+                        }
+
+                        if (old_action_timer < horizontal_bark_time + horizontal_bark_buildup_time && action_timer >= horizontal_bark_time + horizontal_bark_buildup_time) {
+                            animator.SetTrigger("horizontal_bark");
+                            var instance = Instantiate(horizontal_bark_prefab, transform.position + Vector3.up * 0.3f, Quaternion.identity);
+                            instance.velocity = (right ? Vector2.right : Vector2.left) * horizontal_bark_speed;
+                        }
+
+                        if (action_timer >= local_bark_end_time + bark_end_time) {
                             BeginCharge();
                         }
                         
@@ -253,6 +276,7 @@ public class Boss : MonoBehaviour
     }
 
     public void Damage(float damage) {
+        damaged_sound.Play();
         health.health -= damage;
 
         if (health.health < 0f) {
@@ -265,8 +289,11 @@ public class Boss : MonoBehaviour
     }
 
     void Die() {
-        // TODO: Unlock the room
+        death_sound.Play();
+        start_trigger.Win();
 
+        rb2d.drag = 1.6f;
+        animator.SetTrigger("dead");
         Destroy(this);
     }
 
@@ -340,7 +367,7 @@ public class Boss : MonoBehaviour
                     var wanted_end_time = (float)(i / bark_simultaneous) * bark_speed + Random.Range(0f, bark_random_time);
                     var wanted_time = wanted_end_time - t;
                     min_time = Mathf.Min(wanted_time, min_time);
-                    local_bark_end_time = Mathf.Max(local_bark_end_time, wanted_end_time + bark_end_time);
+                    local_bark_end_time = Mathf.Max(local_bark_end_time, wanted_end_time);
 
                     bark_places[i].wanted_time = wanted_time;
                     bark_places[i].time = t;
@@ -366,6 +393,7 @@ public class Boss : MonoBehaviour
     }
 
     void ChargeToRandomSpot() {
+        charge_sound.Play();
         int num = 0;
         for (int i = 0; i < bark_target_points.Length; i++) {
             if (i >= 2 && i < bark_target_points.Length - 2) continue;
@@ -402,6 +430,7 @@ public class Boss : MonoBehaviour
     }
 
     void Bite() {
+        bite_sound.Play();
         animator.SetTrigger("slash");
 
         // Bite!

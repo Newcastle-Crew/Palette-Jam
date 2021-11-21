@@ -178,6 +178,11 @@ MonoBehaviour:
   broken_sprite: {fileID: 21300000, guid: 829faf418edbead4e8c3b98f3cfa4694, type: 3}
   break_delay: 0.3
   pieces: 2
+  despawn: 0
+  break_sound:
+    clips:
+    - {fileID: 8300000, guid: ddb28ab3889adb54a9c407e7ff8450e2, type: 3}
+    volume: 0.6
   combo_counter: -1
 --- !u!114 &8191684366055593424
 MonoBehaviour:
