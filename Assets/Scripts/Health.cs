@@ -17,10 +17,9 @@ public class Health : MonoBehaviour
             health_bar_blocker.localScale = local_scale;
 
             if (_health > 0f && value <= 0f) {
-                var breaking = health_bar.GetComponent<Breakable>();
-                if (breaking != null) {
-                    breaking.BreakImmediate();
-                }
+                health_bar.AddComponent<Rigidbody2D>();
+                health_bar.AddComponent<BoxCollider2D>();
+                health_bar.AddComponent<DamageableSection>();
             }
 
             _health = value;

@@ -13,6 +13,8 @@ public class Breakable : MonoBehaviour
     public int pieces = 2;
     public bool despawn = false;
 
+    public SoundEffect break_sound;
+
     public int combo_counter = -1;
 
     public void Damage(float damage) {
@@ -25,18 +27,25 @@ public class Breakable : MonoBehaviour
     }
 
     IEnumerator GetRekt() {
+        break_sound.Play();
         if (broken_sprite != null) {
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
+
         yield return new WaitForSeconds(break_delay);
 
-        BreakImmediate();
+        Score.AddScore((Vector2)transform.position, score + combo_counter);
+
+        BreakApart();
+        Destroy(gameObject);
     }
 
     public void BreakImmediate() {
         if (broken_sprite != null) {
             GetComponent<SpriteRenderer>().sprite = broken_sprite;
         }
+
+        break_sound.Play();
 
         Score.AddScore((Vector2)transform.position, score + combo_counter);
 

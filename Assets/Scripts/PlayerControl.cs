@@ -64,6 +64,11 @@ public class PlayerControl : MonoBehaviour
     List<Collider2D> scratch_results;
     ContactFilter2D scratch_contact_filter;
 
+    public SoundEffect bounce_sound;
+    public SoundEffect slap_sound;
+    public SoundEffect damaged_sound;
+    public SoundEffect death_sound;
+
     void Awake()
     {
         contacts = new ContactPoint2D[4];
@@ -106,6 +111,8 @@ public class PlayerControl : MonoBehaviour
     }
 
     public void Damage(float damage) {
+        damaged_sound.Play();
+
         this.health.health -= damage;
 
         if (this.health.health <= 0f) {
@@ -116,6 +123,8 @@ public class PlayerControl : MonoBehaviour
     }
     
     void Die() {
+        death_sound.Play();
+
         // Destroy just the player controller
         Destroy(this);
 
@@ -144,6 +153,7 @@ public class PlayerControl : MonoBehaviour
             }
 
             animator.SetTrigger("weak_slash");
+            slap_sound.Play();
 
             // Find a slashable object
             var local = maybe_flip_horizontal(scratch_pos.localPosition, !right);
@@ -230,6 +240,8 @@ public class PlayerControl : MonoBehaviour
                         bounces -= 1;
                         bounces = Mathf.Max(bounces, 0);
                     }
+
+                    bounce_sound.Play();
 
                     Jump(bounces * bounce_strength + bounce_jump_percent);
                     failed_jump_t = -100f;
