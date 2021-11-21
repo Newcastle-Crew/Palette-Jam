@@ -3269,7 +3269,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1260956087}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: 0bd0d488ba671a344986de2f8b0863c5, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -6067,7 +6067,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3017420700649095163, guid: 0ee1b30805c186a4383fce84b64cd447, type: 3}
       propertyPath: break_delay
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3017420700649095163, guid: 0ee1b30805c186a4383fce84b64cd447, type: 3}
       propertyPath: broken_sprite
