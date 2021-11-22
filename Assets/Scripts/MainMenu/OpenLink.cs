@@ -24,4 +24,22 @@ public class OpenLink : MonoBehaviour
 
     public void LeonCredit()
     { Application.OpenURL("https://dxrkest.itch.io"); }
+
+    public void FontCredit()
+    { Application.OpenURL("https://www.1001fonts.com/ticketing-font.html#license"); }
+
+    public void DogBarkingCredit()
+    { Application.OpenURL("https://soundbible.com/2215-Labrador-Barking-Dog.html"); }
+
+    public void GlassBreakingCredit()
+    { Application.OpenURL("https://soundbible.com/1761-Glass-Breaking.html"); }
+
+    public void BedspringSqueakCredit()
+    { Application.OpenURL("https://soundbible.com/946-Bedspring-Squeak.html"); }
+
+    public void AngryCatCredit()
+    { Application.OpenURL("https://soundbible.com/1363-Angry-Cat.html"); }
+
+    public void SlapCredit()
+    { Application.OpenURL("https://mixkit.co/free-sound-effects/hit/?page=2"); }
 }
