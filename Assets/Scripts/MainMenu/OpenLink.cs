@@ -24,4 +24,7 @@ public class OpenLink : MonoBehaviour
 
     public void LeonCredit()
     { Application.OpenURL("https://dxrkest.itch.io"); }
+
+    public void FontCredit()
+    { Application.OpenURL("https://www.1001fonts.com/ticketing-font.html#license"); }
 }
