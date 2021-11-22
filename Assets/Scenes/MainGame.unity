@@ -9763,6 +9763,10 @@ PrefabInstance:
       value: Cat_health_bar
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011624, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2497143600986011624, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -15544,7 +15548,7 @@ GameObject:
   - component: {fileID: 7549567244944055161}
   - component: {fileID: 7549567244944055162}
   - component: {fileID: 7549567244944055160}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: dog_health_bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
