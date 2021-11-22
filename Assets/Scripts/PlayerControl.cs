@@ -90,9 +90,9 @@ public class PlayerControl : MonoBehaviour
     }
 
     public void ActivateCatnip(float time) {
-        // TODO: Speed up music as well.
-
         if (this.catnip_time < 0f) {
+            MusicController.SuperSpeed();
+
             this.catnip_time = time;
         } else {
             this.catnip_time += time;
@@ -197,7 +197,12 @@ public class PlayerControl : MonoBehaviour
     }
 
     void FixedUpdate() {
+        var old_catnip_time = this.catnip_time;
         this.catnip_time -= Time.fixedDeltaTime;
+
+        if (old_catnip_time > 0f && this.catnip_time <= 0f) {
+            MusicController.StopSuperSpeed();
+        }
 
         if (holding_jump) {
             low_grav_jump_timer -= Time.fixedDeltaTime;

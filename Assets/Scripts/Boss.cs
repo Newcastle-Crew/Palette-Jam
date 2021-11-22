@@ -298,6 +298,8 @@ public class Boss : MonoBehaviour
         animator.SetTrigger("dead");
         Destroy(this);
 
+        MusicController.StopBossMusic();
+
         StartCoroutine("LoadNewScene");
     }
 

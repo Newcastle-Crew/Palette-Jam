@@ -22,6 +22,7 @@ public class BossStartTrigger : MonoBehaviour
 
         started = true;
 
+        MusicController.StartBossMusic();
         Timer.Disable();
         boss.SetActive(true);
         boss.GetComponent<Boss>().start_trigger = this;
