@@ -27,6 +27,7 @@ public class SoundEffectPlayer : MonoBehaviour
     public static void Play(ref SoundEffect effect)
     {
         if(Instance == null) return;
+        if (effect.clips == null) return;
         if (effect.clips.Length == 0) return;
 
         var i = Random.Range(0, effect.clips.Length);
