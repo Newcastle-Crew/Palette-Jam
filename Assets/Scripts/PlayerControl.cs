@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
@@ -132,6 +134,13 @@ public class PlayerControl : MonoBehaviour
         rb2d.drag = 0.3f;
 
         animator.SetTrigger("death");
+
+        StartCoroutine("LoadNewScene");
+    }
+
+    IEnumerator LoadNewScene() {
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene(sceneBuildIndex: 0);
     }
 
     void Update() {

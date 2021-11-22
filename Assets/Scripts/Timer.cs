@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -8,6 +9,7 @@ public class Timer : MonoBehaviour
     float countdown = 183.0f; // Counts down for 3 minutes and 3 seconds.
     static bool active;
     public Text timerUI;
+    public SoundEffect timeout_sound;
 
     void Awake() {
         instance = this;
@@ -31,7 +33,13 @@ public class Timer : MonoBehaviour
         double b = System.Math.Round(countdown, 2);
         timerUI.text = minutes + ":" + seconds;
 
-        if (countdown < 0) // Sends you back to the main menu when the timer hits 0.
-        { SceneManager.LoadScene(sceneBuildIndex: 0); }
+        if (countdown < 0) {
+            StartCoroutine("LoadNewScene");
+        }
+    }
+
+    IEnumerator LoadNewScene() {
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadScene(sceneBuildIndex: 0);
     }
 }
