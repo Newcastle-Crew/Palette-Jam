@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
     static Timer instance;
-    float countdown = 183.0f; // Counts down for 3 minutes and 3 seconds.
+    float countdown = 123.0f;
     static bool active;
     public Text timerUI;
     public SoundEffect timeout_sound;
@@ -40,6 +40,6 @@ public class Timer : MonoBehaviour
 
     IEnumerator LoadNewScene() {
         yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadScene(sceneBuildIndex: 0);
+        SceneManager.LoadScene(2);
     }
 }

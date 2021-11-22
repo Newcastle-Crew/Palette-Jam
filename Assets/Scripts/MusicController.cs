@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(AudioSource))]
 public class MusicController : MonoBehaviour
@@ -13,7 +12,7 @@ public class MusicController : MonoBehaviour
 
     public AudioClip boss_music;
 
-    public SpriteRenderer muted_sprite_renderer;
+    public Image muted_sprite_renderer;
     public Sprite muted_sprite;
     public Sprite unmuted_sprite;
 
@@ -31,6 +30,13 @@ public class MusicController : MonoBehaviour
         if (!muted) {
             source.Play();
         }
+    }
+
+    public static void FlipMute() {
+        if (Instance == null) return;
+
+        if (!Instance.muted) Mute();
+        else Unmute();
     }
 
     public static void Mute() {

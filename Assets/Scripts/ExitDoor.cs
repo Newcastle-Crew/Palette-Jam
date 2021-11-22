@@ -22,7 +22,7 @@ public class ExitDoor : MonoBehaviour
                 PlayerPrefs.SetInt("HighScore", score);
             }
 
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(3);
         }
     }
 

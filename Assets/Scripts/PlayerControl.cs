@@ -140,7 +140,7 @@ public class PlayerControl : MonoBehaviour
 
     IEnumerator LoadNewScene() {
         yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadScene(sceneBuildIndex: 0);
+        SceneManager.LoadScene(2);
     }
 
     void Update() {
