@@ -30,6 +30,8 @@ public class OneWayPlatform : MonoBehaviour
         // we don't disable it.
         if (!blocking_collider.bounds.Intersects(other.bounds)) {
             Physics2D.IgnoreCollision(blocking_collider, other, true);
+        } else {
+            Physics2D.IgnoreCollision(blocking_collider, other, false);
         }
     }
 
