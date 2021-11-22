@@ -10,6 +10,8 @@ public class PlayerControl : MonoBehaviour
 {
     public static PlayerControl Instance = null;
 
+    bool dead = false;
+
     public float speed = 1.0f;
     public float catnip_speed = 1.5f;
     public float air_speed = 0.02f;
@@ -125,10 +127,9 @@ public class PlayerControl : MonoBehaviour
     }
     
     void Die() {
-        death_sound.Play();
+        dead = true;
 
-        // Destroy just the player controller
-        Destroy(this);
+        death_sound.Play();
 
         // We no longer do manual friction, so make sure it has some amount of friction.
         rb2d.drag = 0.3f;
@@ -144,6 +145,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     void Update() {
+        if(dead) return;
         // We're on somewhat stable/straight ground, therefore we can jump!
         if (Input.GetButtonDown("Jump")) {
             if (on_ground) {

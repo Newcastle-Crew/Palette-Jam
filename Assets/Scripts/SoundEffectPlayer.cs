@@ -32,6 +32,7 @@ public class SoundEffectPlayer : MonoBehaviour
 
         var i = Random.Range(0, effect.clips.Length);
         var clip = effect.clips[i];
+        if (clip == null) return;
         Instance.audio_source.PlayOneShot(clip, effect.volume);
     }
 }
