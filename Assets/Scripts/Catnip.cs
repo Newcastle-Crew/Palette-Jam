@@ -15,6 +15,7 @@ public class Catnip : MonoBehaviour
             var animator = GetComponent<Animator>();
             if (animator != null) {
                 animator.SetTrigger("collected");
+                Destroy(gameObject, 3f);
             } else {
                 Destroy(gameObject);
             }
