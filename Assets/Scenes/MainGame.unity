@@ -11824,7 +11824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011624, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011626, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_RootOrder
@@ -11836,7 +11836,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011626, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.18
+      value: 1.78
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011626, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -18369,11 +18369,11 @@ PrefabInstance:
       objectReference: {fileID: 1496413864}
     - target: {fileID: 5085296858905810926, guid: fec4626fa4557be498ab619191461330, type: 3}
       propertyPath: max_health
-      value: 34
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 5085296858905810926, guid: fec4626fa4557be498ab619191461330, type: 3}
       propertyPath: health_bar_pixels
-      value: 34
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 5085296858905810926, guid: fec4626fa4557be498ab619191461330, type: 3}
       propertyPath: health_bar_blocker
@@ -18965,7 +18965,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7549567244944055163}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.77, z: 0}
+  m_LocalPosition: {x: 0, y: 0.49, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7549567244612710465}
@@ -19041,7 +19041,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!50 &7549567245091605584
 Rigidbody2D:
   serializedVersion: 4
