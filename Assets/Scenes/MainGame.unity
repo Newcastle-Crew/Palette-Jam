@@ -9740,7 +9740,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2497143600709571789, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600709571790, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_LocalScale.x
@@ -9753,6 +9753,10 @@ PrefabInstance:
     - target: {fileID: 2497143600709571790, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.059
+      objectReference: {fileID: 0}
+    - target: {fileID: 2497143600709571790, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 2497143600986011624, guid: d5f0fa58671a3794c929a15457b4283d, type: 3}
       propertyPath: m_Name
@@ -15094,7 +15098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 7549567245091605589}
-  required_score: 5
+  required_score: 200
   fade_speed: 1
   fragment_prefab: {fileID: 8382533931481676928, guid: d7a57f1886ff1214987e127ad2b4acee, type: 3}
   disable_when_boss:
