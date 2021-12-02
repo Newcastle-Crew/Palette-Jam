@@ -15,7 +15,7 @@ public class Breakable : MonoBehaviour
 
     public SoundEffect break_sound;
 
-    public int combo_counter = -1;
+    public int combo_counter = 2;
 
     public void Damage(float damage) {
         var old_health = health;
