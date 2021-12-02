@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class Timer : MonoBehaviour
 {
     static Timer instance;
-    float countdown = 123.0f;
+    float countdown = 155.0f;
     static bool active;
     public Text timerUI;
     public SoundEffect timeout_sound;
