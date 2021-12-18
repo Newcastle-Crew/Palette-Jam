@@ -27,8 +27,10 @@ public class Timer : MonoBehaviour
         if (countdown > 0)
         { countdown -= Time.deltaTime; }
 
-        string minutes = ((int)countdown / 60).ToString();
-        string seconds = (countdown % 60).ToString("00");
+        int displayTimer = Mathf.CeilToInt(countdown);
+
+        string minutes = ((int)displayTimer / 60).ToString();
+        string seconds = (displayTimer % 60).ToString("00");
 
         double b = System.Math.Round(countdown, 2);
         timerUI.text = minutes + ":" + seconds;
